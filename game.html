@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeBTC Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
+        const gravity = 0.5;
+        let score = 0;
+
+        class MemeBTC {
+            constructor() {
+                this.width = 50;
+                this.height = 50;
+                this.x = 50;
+                this.y = canvas.height - this.height;
+                this.velocityY = 0;
+                this.jumpPower = -10;
+            }
+
+            draw() {
+                ctx.fillStyle = 'orange';
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            jump() {
+                if (this.y === canvas.height - this.height) {
+                    this.velocityY = this.jumpPower;
+                }
+            }
+
+            update() {
+                this.velocityY += gravity;
+                this.y += this.velocityY;
+
+                if (this.y > canvas.height - this.height) {
+                    this.y = canvas.height - this.height;
+                    this.velocityY = 0;
+                }
+
+                this.draw();
+            }
+        }
+
+        class Bitcoin {
+            constructor() {
+                this.width = 30;
+                this.height = 30;
+                this.x = canvas.width;
+                this.y = canvas.height - this.height - Math.random() * 100;
+            }
+
+            draw() {
+                ctx.fillStyle = 'gold';
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            update() {
+                this.x -= 5;
+                this.draw();
+            }
+        }
+
+        class Obstacle {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width;
+                this.y = canvas.height - this.height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'red';
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            update() {
+                this.x -= 5;
+                this.draw();
+            }
+        }
+
+        const memeBTC = new MemeBTC();
+        let bitcoins = [];
+        let obstacles = [];
+        let frame = 0;
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            memeBTC.update();
+
+            if (frame % 100 === 0) {
+                bitcoins.push(new Bitcoin());
+                obstacles.push(new Obstacle());
+            }
+
+            bitcoins.forEach((bitcoin, index) => {
+                bitcoin.update();
+
+                // Collision detection
+                if (
+                    memeBTC.x < bitcoin.x + bitcoin.width &&
+                    memeBTC.x + memeBTC.width > bitcoin.x &&
+                    memeBTC.y < bitcoin.y + bitcoin.height &&
+                    memeBTC.y + memeBTC.height > bitcoin.y
+                ) {
+                    bitcoins.splice(index, 1);
+                    score++;
+                    console.log('Score:', score);
+                }
+
+                if (bitcoin.x + bitcoin.width < 0) {
+                    bitcoins.splice(index, 1);
+                }
+            });
+
+            obstacles.forEach((obstacle, index) => {
+                obstacle.update();
+
+                // Collision detection
+                if (
+                    memeBTC.x < obstacle.x + obstacle.width &&
+                    memeBTC.x + memeBTC.width > obstacle.x &&
+                    memeBTC.y < obstacle.y + obstacle.height &&
+                    memeBTC.y + memeBTC.height > obstacle.y
+                ) {
+                    console.log('Game Over');
+                    cancelAnimationFrame(animationId);
+                }
+
+                if (obstacle.x + obstacle.width < 0) {
+                    obstacles.splice(index, 1);
+                }
+            });
+
+            frame++;
+            requestAnimationFrame(animate);
+        }
+
+        let animationId = requestAnimationFrame(animate);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                memeBTC.jump();
+            }
+        });
+    </script>
+</body>
+</html>
