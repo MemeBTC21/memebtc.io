@@ -16,8 +16,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
             z-index: -1;
+            pointer-events: none;
         }
         #customAlert {
             display: none;
@@ -59,10 +59,12 @@
     </style>
 </head>
 <body>
-    <video id="videoBackground" autoplay loop muted>
-        <source src="https://youtu.be/zRgsMMU29Q8" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <iframe id="videoBackground" 
+            src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+    </iframe>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
@@ -72,8 +74,8 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const videoBackground = document.getElementById('videoBackground');
         const muteButton = document.getElementById('muteButton');
+        const videoBackground = document.getElementById('videoBackground');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -82,7 +84,7 @@
 
         function toggleMute() {
             isMuted = !isMuted;
-            videoBackground.muted = isMuted;
+            videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
             muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
         }
 
