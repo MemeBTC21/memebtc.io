@@ -177,10 +177,6 @@
                 this.velocityY = lift * 10;
             }
 
-            moveDown() {
-                this.velocityY = -lift * 10;
-            }
-
             update() {
                 this.velocityY += gravity;
                 this.y += this.velocityY;
@@ -289,31 +285,19 @@
             requestAnimationFrame(animate);
         }
 
+        function moveMemeBTC() {
+            memeBTC.moveUp();
+        }
+
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'ArrowUp') {
-                memeBTC.moveUp();
-            } else if (e.code === 'ArrowDown') {
-                memeBTC.moveDown();
+            if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+                moveMemeBTC();
             }
         });
 
-        document.addEventListener('touchstart', (e) => {
-            const touchY = e.touches[0].clientY;
-            if (touchY < canvas.height / 2) {
-                memeBTC.moveUp();
-            } else {
-                memeBTC.moveDown();
-            }
-        });
+        document.addEventListener('mousedown', moveMemeBTC);
 
-        document.addEventListener('mousemove', (e) => {
-            const mouseY = e.clientY;
-            if (mouseY < canvas.height / 2) {
-                memeBTC.moveUp();
-            } else {
-                memeBTC.moveDown();
-            }
-        });
+        document.addEventListener('touchstart', moveMemeBTC);
 
         document.getElementById('startButton').addEventListener('click', () => {
             document.getElementById('startModal').style.display = 'none';
