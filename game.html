@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
+            color: white; /* Ensure all body text is white */
         }
         #videoBackground {
             position: fixed;
@@ -19,28 +20,6 @@
             z-index: -1;
             pointer-events: none;
             background-color: black;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        #playFallbackButton {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-            z-index: 1000;
         }
         #customAlert {
             display: none;
@@ -82,63 +61,66 @@
     </style>
 </head>
 <body>
-    <div id="videoBackground">
-        <iframe id="backgroundVideo" 
-                src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8&controls=0&showinfo=0&rel=0" 
-                allow="autoplay; encrypted-media" 
-                frameborder="0" 
-                allowfullscreen>
-        </iframe>
-        <button id="playFallbackButton" onclick="startVideo()">Play Background Video</button>
-    </div>
+    <div id="videoBackground"></div>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
         <button onclick="closeAlert()">OK</button>
     </div>
-    <button id="muteButton" onclick="toggleMute()">Unmute</button>
+    <button id="muteButton" onclick="toggleMute()">Mute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const muteButton = document.getElementById('muteButton');
-        const iframe = document.getElementById('backgroundVideo');
-        const playFallbackButton = document.getElementById('playFallbackButton');
+        const videoBackground = document.getElementById('videoBackground');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let isMuted = true;
+        let player;
 
-        // Fallback to play button if autoplay fails
-        function startVideo() {
-            iframe.src = iframe.src.replace('autoplay=1', 'autoplay=1');
-            playFallbackButton.style.display = 'none';
+        // Load the IFrame Player API code asynchronously.
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Replace the 'videoBackground' div with an <iframe> and YouTube player after the API code downloads.
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoBackground', {
+                videoId: 'zRgsMMU29Q8',
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: 'zRgsMMU29Q8',
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    iv_load_policy: 3,
+                    fs: 0
+                },
+                events: {
+                    onReady: onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
         }
 
         function toggleMute() {
-            const src = iframe.src;
             if (isMuted) {
-                iframe.src = src.replace('mute=1', 'mute=0');
+                player.unMute();
                 muteButton.innerText = 'Mute';
             } else {
-                iframe.src = src.replace('mute=0', 'mute=1');
+                player.mute();
                 muteButton.innerText = 'Unmute';
             }
             isMuted = !isMuted;
         }
-
-        // Check if autoplay works, show play button if not
-        window.addEventListener('load', () => {
-            const testAutoplay = document.createElement('video');
-            testAutoplay.muted = true;
-            testAutoplay.autoplay = true;
-            testAutoplay.src = 'https://www.youtube.com/embed/zRgsMMU29Q8';
-            testAutoplay.play()
-                .catch(() => {
-                    console.warn('Autoplay failed, showing play button.');
-                    playFallbackButton.style.display = 'block';
-                });
-        });
 
         const gravity = 0.5;
         const lift = -1.5;
@@ -350,7 +332,7 @@
             if (e.code === 'ArrowUp') {
                 memeBTC.moveUp();
             } else if (e.code === 'ArrowDown') {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
@@ -359,16 +341,16 @@
             if (touchY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
         document.addEventListener('mousemove', (e) => {
             const mouseY = e.clientY;
             if (mouseY < canvas.height / 2) {
-                memeBTC.moveUp();
+                memeBTC moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
