@@ -160,10 +160,10 @@
                 if (
                     this.x + this.width < player.x ||
                     this.x > player.x + player.width ||
-                    this.y + this.height < player.y ||
+                    this.y + this height < player.y ||
                     this.y > player.y + player.height
                 ) {
-                    this.hasCollided = false;
+                    this hasCollided = false;
                 }
             }
         }
@@ -225,7 +225,7 @@
             if (e.code === 'ArrowUp') {
                 memeBTC.moveUp();
             } else if (e.code === 'ArrowDown') {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
@@ -234,7 +234,7 @@
             if (touchY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
@@ -243,7 +243,7 @@
             if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
