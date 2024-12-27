@@ -3,286 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MemeBTC: The Prince of Cryptocurrency</title>
+    <title>MemeBTC Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
             margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, orange, blue);
-            color: #333;
+            overflow: hidden;
         }
-        header {
-            background-color: #222;
-            color: #fff;
-            padding: 20px 10px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-        header img {
-            height: 100px; /* Double the size */
-            margin-right: 20px;
-        }
-        main {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2, h3 {
-            color: #0056b3;
-        }
-        section {
-            margin-bottom: 20px;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #222;
-            color: #fff;
-        }
-        .links a {
-            color: #0056b3;
-            text-decoration: none;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
-        .social-icons img {
-            height: 30px;
-            margin: 0 10px;
-        }
-        .responsive-iframe {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        }
-        .responsive-iframe iframe {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-            }
-            header img {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
+        canvas {
+            display: block;
+            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
 <body>
-    <header>
-        <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif" alt="MemeBTC Logo">
-        <h1>MemeBTC: The Prince of Cryptocurrency</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Welcome to the MemeBTC Family!</h2>
-            <p>Introducing <strong>MemeBTC</strong>, the ingenious offspring of King Bitcoin and Queen Cardano. MemeBTC is not just another memecoin. It is a fun, educational, and innovative project built on the <strong>Cardano blockchain</strong>, aiming to transform the crypto space by combining humor with serious blockchain principles. With a <strong>limited supply of 21 million tokens</strong>, MemeBTC offers unique investment value and a strong community-driven focus.</p>
-        </section>
-        <section>
-            <h2>The MemeBTC Royal Family</h2>
-            <p><strong>Father: King Bitcoin</strong><br>The OG crypto king, stoic and revolutionary, representing the foundation of decentralized finance.</p>
-            <p><strong>Mother: Queen Cardano</strong><br>The elegant and innovative blockchain powerhouse, nurturing innovation and sustainability.</p>
-            <p><strong>Son: MemeBTC</strong><br>The mischievous, meme-fueled prince, combining humor with robust crypto fundamentals to revolutionize the memecoin space.</p>
-        </section>
-        <section>
-            <h2>Why Choose MemeBTC?</h2>
-            <ul>
-                <li><strong>Serious Fun:</strong> Engaging way to learn about blockchain while having fun.</li>
-                <li><strong>Community-Driven:</strong> Shaped by and for meme enthusiasts.</li>
-                <li><strong>Unique and Limited Supply:</strong> Scarce, non-divisible tokens with collectible value.</li>
-                <li><strong>The Peter Schiff Factor:</strong> Humorously tackles skepticism from crypto critics.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Tokenomics</h2>
-            <p><strong>Total Supply:</strong> 21,000,000</p>
-            <p><strong>Circulating Supply:</strong> 15,700,000</p>
-            <p><strong>Current Price:</strong> $0.00127</p>
-            <p><strong>Policy ID:</strong> 9281b28e3839ef01fdde183a11f0<br>5e45d0041ece6151d1ec37fd42a0</p>
-        </section>
-        <section>
-            <h2>Current Achievements</h2>
-            <ul>
-                <li>Verified on Cardano wallets and DEXs (SundaeSwap V2 and Minswap V2).</li>
-                <li>Tradable directly with ADA in compatible wallets.</li>
-                <li>NFT integration on <a href="https://www.jpg.store/collection/5edd427a40baa134287b5e48f54257bcdfc73eb6a6076b9d82a196ab?tab=items&listingTypes=SINGLE_ASSET&saleType=buy-now" target="_blank">JPG Store</a>.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Future Roadmap</h2>
-            <h3>Short-Term Goals</h3>
-            <ul>
-                <li>Stake Pool Setup: Enable staking rewards for long-term holders, creating deflationary pressure and fostering community engagement.</li>
-                <li>Metadata Enhancements: Update the Cardano Token Registry with a dynamic GIF logo and a refined description to enhance branding and visibility.</li>
-            </ul>
-            <h3>Mid-Term Goals</h3>
-            <ul>
-                <li>AI News Generator: Develop an AI-driven news aggregator focusing on Bitcoin, Cardano, and top cryptocurrencies.</li>
-                <li>Gaming Initiative: Launch a crypto-themed game featuring MemeBTC as the main character with play-to-earn (P2E) mechanics and NFT integration.</li>
-            </ul>
-            <h3>Long-Term Vision</h3>
-            <ul>
-                <li>Smart Contract Capabilities: Expand utility by developing decentralized applications (dApps) on the Cardano blockchain.</li>
-                <li>Community Governance: Introduce governance mechanisms to empower the community to shape MemeBTC’s future.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Why Invest in MemeBTC?</h2>
-            <ul>
-                <li><strong>Scarcity-Driven Value:</strong> A limited supply of 21 million tokens ensures long-term value appreciation.</li>
-                <li><strong>Community Power:</strong> Join a passionate and meme-loving community that actively contributes to MemeBTC’s growth.</li>
-                <li><strong>Meme-Powered Fun:</strong> Participate in meme contests, tipping culture, and NFT promotions to celebrate creativity and crypto education.</li>
-                <li><strong>Supporting Crypto Education:</strong> By supporting MemeBTC, you contribute to educating and onboarding new users into the cryptocurrency world.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Where to Buy MemeBTC</h2>
-            <ul>
-                <li><strong>Decentralized Exchanges:</strong> Trade MemeBTC on SundaeSwap and Minswap (V2).</li>
-                <li><strong>NFT Platforms:</strong> Buy MemeBTC NFTs on <a href="https://www.jpg.store/collection/5edd427a40baa134287b5e48f54257bcdfc73eb6a6076b9d82a196ab?tab=items&listingTypes=SINGLE_ASSET&saleType=buy-now" target="_blank">JPG Store</a>.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>How to Secure MemeBTC</h2>
-            <ol>
-                <li>Use a Cardano-compatible wallet (e.g., Daedalus or Yoroi).</li>
-                <li>Swap ADA for MemeBTC directly within the wallet.</li>
-                <li>Store tokens securely in a hardware wallet for long-term safety.</li>
-            </ol>
-        </section>
-        <section>
-            <h2>MemeBTC: How to Buy & Secure Your Crypto (Step-by-Step)</h2>
-            <p>Watch this video for a comprehensive guide on how to buy and secure your MemeBTC:</p>
-            <div class="responsive-iframe">
-                <iframe src="https://www.youtube.com/embed/AVOqyc1N920?si=l1CNIIdred_xH4Q0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </section>
-        <section>
-            <h2>How to Buy MemeBTC Easily | Step-by-Step Guide with Eternl Wallet</h2>
-            <p>Follow this video for a quick and simple guide to buying MemeBTC using the Eternl wallet:</p>
-            <div class="responsive-iframe">
-                <iframe src="https://www.youtube.com/embed/kxt31v713r0?si=d7J1t3Ce7gG0Ol3N" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </section>
-        <section>
-            <h2>Disclaimer</h2>
-            <p>MemeBTC is a community-driven project aimed at education and entertainment. While we strive for innovation and value, investing in cryptocurrency involves risks. Always Do Your Own Research (DYOR), check local regulations, and never invest more than you can afford to lose. We are not financial advisors.</p>
-        </section>
-        <section>
-            <h2>Join the Meme Revolution!</h2>
-            <p>Be part of the legacy that is MemeBTC. Whether you’re a meme enthusiast, crypto investor, or blockchain newbie, there’s a place for you in our community. Together, let’s reshape the crypto world—one meme at a time.</p>
-        </section>
-        <section>
-            <h2>Useful Links</h2>
-            <ul class="links">
-                <li><a href="https://memebtc.io" target="_blank">Website</a></li>
-                <li><a href="https://twitter.com/MemeBTC21" target="_blank">Twitter</a></li>
-                <li><a href="https://youtube.com/@MemeBTC" target="_blank">YouTube</a></li>
-                <li><a href="https://t.me/MemeBtc21" target="_blank">Telegram</a></li>
-                <li><a href="https://tiktok.com/@memebtc21" target="_blank">TikTok</a></li>
-                <li><a href="https://linktr.ee/MemeBTC21" target="_blank">Linktree</a></li>
-                <li><a href="https://discord.com/invite/memebtc" target="_blank">Discord</a></li>
-                <li><a href="https://my-store-fb7ef7.creator-spring.com" target="_blank">Merchandise</a></li>
-            </ul>
-        </section>
-        <section>
-            <h2>MemeBTC White Paper</h2>
-            <section>
-                <h3>Introduction</h3>
-                <p>MemeBTC is the ingenious offspring of King Bitcoin and Queen Cardano. Combining the strengths of both Bitcoin and Cardano, MemeBTC is not just another memecoin. It is a fun, educational, and innovative project built on the Cardano blockchain, aiming to transform the crypto space by combining humor with serious blockchain principles.</p>
-            </section>
-            <section>
-                <h3>Vision and Mission</h3>
-                <p>Our mission is to create a community-driven, meme-fueled cryptocurrency that offers unique investment value and fosters a strong, engaged community. By integrating humor with robust crypto fundamentals, MemeBTC aims to revolutionize the memecoin space and promote blockchain education.</p>
-            </section>
-            <section>
-                <h3>Tokenomics</h3>
-                <p><strong>Total Supply:</strong> 21,000,000</p>
-                <p><strong>Circulating Supply:</strong> 15,700,000</p>
-                <p><strong>Current Price:</strong> $0.00127</p>
-                <p><strong>Policy ID:</strong> 9281b28e3839ef01fdde183a11f0<br>5e45d0041ece6151d1ec37fd42a0</p>
-            </section>
-            <section>
-                <h3>Token Distribution</h3>
-                <p><strong>50%:</strong> Available for trading on centralized exchanges with provided liquidity, allowing anyone to buy and sell.</p>
-                <p><strong>20%:</strong> Reserved for the developers.</p>
-                <p><strong>30%:</strong> Reserved for future development, including gaming, stake pools, AI news generator, and other initiatives. This reserve also supports staking rewards. The extent of these projects depends on community support and involvement. The more the community engages, the higher the value of the token, enabling more projects to be realized.</p>
-            </section>
-            <section>
-                <h3>Achievements</h3>
-                <ul>
-                    <li>Verified on Cardano wallets and DEXs (SundaeSwap V2 and Minswap V2)</li>
-                    <li>Tradable directly with ADA in compatible wallets</li>
-                    <li>NFT integration on JPG Store</li>
-                </ul>
-            </section>
-            <section>
-                <h3>The MemeBTC Royal Family</h3>
-                <p><strong>Father: King Bitcoin</strong> - The OG crypto king, stoic and revolutionary, representing the foundation of decentralized finance.</p>
-                <p><strong>Mother: Queen Cardano</strong> - The elegant and innovative blockchain powerhouse, nurturing innovation and sustainability.</p>
-                <p><strong>Son: MemeBTC</strong> - The mischievous, meme-fueled prince, combining humor with robust crypto fundamentals to revolutionize the memecoin space.</p>
-            </section>
-            <section>
-                <h3>Why Choose MemeBTC?</h3>
-                <ul>
-                    <li><strong>Serious Fun:</strong> Engaging way to learn about blockchain while having fun.</li>
-                    <li><strong>Community-Driven:</strong> Shaped by and for meme enthusiasts.</li>
-                    <li><strong>Unique and Limited Supply:</strong> Scarce, non-divisible tokens with collectible value.</li>
-                    <li><strong>The Peter Schiff Factor:</strong> Humorously tackles skepticism from crypto critics.</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Future Roadmap</h3>
-                <h4>Short-Term Goals</h4>
-                <ul>
-                    <li>Stake Pool Setup: Enable staking rewards for long-term holders, creating deflationary pressure and fostering community engagement.</li>
-                    <li>Metadata Enhancements: Update the Cardano Token Registry with a dynamic GIF logo and a refined description to enhance branding and visibility.</li>
-                </ul>
-                <h4>Mid-Term Goals</h4>
-                <ul>
-                    <li>AI News Generator: Develop an AI-driven news aggregator focusing on Bitcoin, Cardano, and top cryptocurrencies. The algorithm will scan all relevant news within 24 hours, providing the latest and most important updates in a humorous style characteristic of MemeBTC.</li>
-                    <li>Gaming Initiative: Launch a crypto-themed game featuring MemeBTC as the main character, with play-to-earn (P2E) mechanics and NFT integration.</li>
-                </ul>
-                <h4>Long-Term Vision</h4>
-                <ul>
-                    <li>Smart Contract Capabilities: Expand utility by developing decentralized applications (dApps) on the Cardano blockchain.</li>
-                    <li>Community Governance: Introduce governance mechanisms to empower the community to shape MemeBTC’s future.</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Why Invest in MemeBTC?</h3>
-                <ul>
-                    <li><strong>Scarcity-Driven Value:</strong> A limited supply of 21 million tokens ensures long-term value appreciation.</li>
-                    <li><strong>Community Power:</strong> Join a passionate and meme-loving community that actively contributes to MemeBTC’s growth.</li>
-                    <li><strong>Meme-Powered Fun:</strong> Participate in meme contests, tipping culture, and NFT promotions to celebrate creativity and crypto education.</li>
-                    <li><strong>Supporting Crypto Education:</strong> By supporting MemeBTC, you contribute to educating and onboarding new users into the cryptocurrency world.</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Disclaimer</h3>
-                <p>MemeBTC is a community-driven project aimed at education and entertainment. While we strive for innovation and value, investing in cryptocurrency involves risks. Always Do Your Own Research (DYOR), check local regulations, and never invest more than you can afford to lose. We are not financial advisors.</p>
-            </section>
-            <section>
-                <h3>Conclusion</h3>
-                <p>Be part of the legacy that is MemeBTC. Whether you’re a meme enthusiast, crypto investor, or blockchain newbie, there’s a place for you in our community. Together, let’s reshape the crypto world—one meme at a time.</p>
-            </section>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 MemeBTC. Built for fun, education, and crypto innovation.</p>
-    </footer>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const gravity = 0.5;
+        const lift = -1.5;
+        let scoreBTC = 0;
+        let scoreADA = 0;
+        let level = 1;
+        let speedMultiplier = 1;
+
+        const levels = {
+            1: 1,
+            2: 1.5,
+            3: 2
+        };
+
+        function checkLevelUp() {
+            if (scoreBTC + scoreADA >= 20 && level === 1) {
+                level = 2;
+                speedMultiplier = levels[level];
+                alert("Congratulations! You've reached Level 2!");
+            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
+                level = 3;
+                speedMultiplier = levels[level];
+                alert("Congratulations! You've reached Level 3!");
+            }
+
+            if (scoreBTC + scoreADA === 100) {
+                alert("Amazing! You've collected 100 coins!");
+            } else if (scoreBTC + scoreADA === 200) {
+                alert("You're a Multi-Millionaire! Congratulations!");
+            }
+        }
+
+        class MemeBTC {
+            constructor() {
+                this.width = 50;
+                this.height = 50;
+                this.x = 50;
+                this.y = canvas.height / 2;
+                this.velocityY = 0;
+                this.image = new Image();
+                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
+            }
+
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+
+            moveUp() {
+                this.velocityY = lift * 10;
+            }
+
+            moveDown() {
+                this.velocityY = -lift * 10;
+            }
+
+            update() {
+                this.velocityY += gravity;
+                this.y += this.velocityY;
+
+                if (this.y < 0) {
+                    this.y = 0;
+                }
+                if (this.y > canvas.height - this.height) {
+                    this.y = canvas.height - this.height;
+                }
+
+                this.draw();
+            }
+        }
+
+        class Coin {
+            constructor(type) {
+                this.width = 30;
+                this.height = 30;
+                this.x = canvas.width;
+                this.y = Math.random() * (canvas.height - this.height);
+                this.type = type;
+                this.image = new Image();
+                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
+            }
+
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+
+            update() {
+                this.x -= 5 * speedMultiplier;
+                this.draw();
+            }
+        }
+
+        class Obstacle {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width;
+                this.y = Math.random() * (canvas.height - this.height);
+                this.image = new Image();
+                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
+                this.hasCollided = false;
+            }
+
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+
+            update() {
+                this.x -= 6 * speedMultiplier;
+                this.draw();
+            }
+
+            checkCollision(player) {
+                if (
+                    !this.hasCollided &&
+                    player.x < this.x + this.width &&
+                    player.x + player.width > this.x &&
+                    player.y < this.y + this.height &&
+                    player.y + player.height > this.y
+                ) {
+                    this.hasCollided = true;
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    document.location.reload();
+                }
+
+                if (
+                    this.x + this.width < player.x ||
+                    this.x > player.x + player.width ||
+                    this.y + this.height < player.y ||
+                    this.y > player.y + player.height
+                ) {
+                    this.hasCollided = false;
+                }
+            }
+        }
+
+        const memeBTC = new MemeBTC();
+        let coins = [];
+        let obstacles = [];
+        let frame = 0;
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            memeBTC.update();
+
+            if (frame % 100 === 0) {
+                const type = Math.random() > 0.5 ? 'BTC' : 'ADA';
+                coins.push(new Coin(type));
+                obstacles.push(new Obstacle());
+            }
+
+            coins.forEach((coin, index) => {
+                coin.update();
+
+                // Collision detection for coins
+                if (
+                    memeBTC.x < coin.x + coin.width &&
+                    memeBTC.x + memeBTC.width > coin.x &&
+                    memeBTC.y < coin.y + coin.height &&
+                    memeBTC.y + memeBTC.height > coin.y
+                ) {
+                    if (coin.type === 'BTC') scoreBTC++;
+                    else scoreADA++;
+                    coins.splice(index, 1);
+                    checkLevelUp();
+                }
+
+                if (coin.x + coin.width < 0) {
+                    coins.splice(index, 1);
+                }
+            });
+
+            obstacles.forEach((obstacle) => {
+                obstacle.update();
+                obstacle.checkCollision(memeBTC);
+            });
+
+            frame++;
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'black';
+            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
+
+            requestAnimationFrame(animate);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowUp') {
+                memeBTC.moveUp();
+            } else if (e.code === 'ArrowDown') {
+                memeBTC.moveDown();
+            }
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            const touchY = e.touches[0].clientY;
+            if (touchY < canvas.height / 2) {
+                memeBTC.moveUp();
+            } else {
+                memeBTC.moveDown();
+            }
+        });
+
+        requestAnimationFrame(animate);
+    </script>
 </body>
 </html>
