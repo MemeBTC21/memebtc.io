@@ -12,8 +12,9 @@
         }
         canvas {
             display: block;
-            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
-            background-size: cover;
+            background: linear-gradient(to bottom, blue, orange);
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -66,8 +67,8 @@
 
         class MemeBTC {
             constructor() {
-                this.width = 100; // Increased size
-                this.height = 100; // Increased size
+                this.width = 100;
+                this.height = 100;
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
@@ -104,8 +105,8 @@
 
         class Coin {
             constructor(type) {
-                this.width = 60; // Increased size
-                this.height = 60; // Increased size
+                this.width = 60;
+                this.height = 60;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
@@ -125,8 +126,8 @@
 
         class Obstacle {
             constructor() {
-                this.width = 80; // Increased size
-                this.height = 80; // Increased size
+                this.width = 80;
+                this.height = 80;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
@@ -189,7 +190,6 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                // Collision detection for coins
                 if (
                     memeBTC.x < coin.x + coin.width &&
                     memeBTC.x + memeBTC.width > coin.x &&
@@ -214,7 +214,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white';
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
