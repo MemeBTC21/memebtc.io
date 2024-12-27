@@ -74,7 +74,7 @@
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://youtube.com/shorts/kGVCskoXnx4';
+                this.image.src = 'https://example.com/memebtc_logo.png';
             }
 
             draw() {
@@ -112,7 +112,7 @@
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://youtube.com/shorts/kGVCskoXnx4' : 'https://youtu.be/B6jFR5h_5t4';
+                this.image.src = type === 'BTC' ? 'https://example.com/bitcoin_coin.png' : 'https://example.com/cardano_coin.png';
             }
 
             draw() {
@@ -132,7 +132,7 @@
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://youtu.be/h8NZKeVXHUo';
+                this.image.src = 'https://example.com/obstacle.png';
                 this.hasCollided = false;
             }
 
