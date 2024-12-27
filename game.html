@@ -9,35 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-        }
-        #videoBackground {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            background-color: black;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        #muteButton {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background: black;
-            color: white;
-            border: 2px solid white;
-            cursor: pointer;
-            z-index: 1000;
+            background: linear-gradient(to bottom, blue, orange);
         }
         canvas {
             display: block;
@@ -47,39 +19,13 @@
     </style>
 </head>
 <body>
-    <!-- Removed all references to the old video background -->
-    <div id="videoBackground">
-        <iframe id="backgroundVideo" 
-                src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
-                allow="autoplay; encrypted-media" 
-                frameborder="0" 
-                allowfullscreen>
-        </iframe>
-    </div>
     <canvas id="gameCanvas"></canvas>
-    <button id="muteButton" onclick="toggleMute()">Unmute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const muteButton = document.getElementById('muteButton');
-        const iframe = document.getElementById('backgroundVideo');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        let isMuted = true;
-
-        function toggleMute() {
-            const src = iframe.src;
-            if (isMuted) {
-                iframe.src = src.replace('mute=1', 'mute=0');
-                muteButton.innerText = 'Mute';
-            } else {
-                iframe.src = src.replace('mute=0', 'mute=1');
-                muteButton.innerText = 'Unmute';
-            }
-            isMuted = !isMuted;
-        }
 
         const gravity = 0.5;
         const lift = -1.5;
