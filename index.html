@@ -9,45 +9,22 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(to bottom, blue, orange);
         }
         canvas {
             display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        #muteButton {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background: black;
-            color: white;
-            border: 2px solid white;
-            cursor: pointer;
+            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    <button id="muteButton" onclick="toggleMute()">Mute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-
-        // Adjust canvas to fill the screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Mute functionality (placeholder as no YouTube video exists)
-        function toggleMute() {
-            alert('No background audio to mute/unmute.');
-        }
-
-        // Game variables
         const gravity = 0.5;
         const lift = -1.5;
         let scoreBTC = 0;
@@ -63,15 +40,39 @@
             3: { speed: 2, coinRate: 60, obstacleRate: 80 }
         };
 
+        function checkLevelUp() {
+            if (scoreBTC + scoreADA >= 20 && level === 1) {
+                level = 2;
+                updateLevelSettings();
+                alert("Congratulations! You've reached Level 2!");
+            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
+                level = 3;
+                updateLevelSettings();
+                alert("Congratulations! You've reached Level 3!");
+            }
+
+            if (scoreBTC + scoreADA === 100) {
+                alert("Amazing! You've collected 100 coins!");
+            } else if (scoreBTC + scoreADA === 200) {
+                alert("You're a Multi-Millionaire! Congratulations!");
+            }
+        }
+
+        function updateLevelSettings() {
+            speedMultiplier = levels[level].speed;
+            coinSpawnRate = levels[level].coinRate;
+            obstacleSpawnRate = levels[level].obstacleRate;
+        }
+
         class MemeBTC {
             constructor() {
-                this.width = 100;
-                this.height = 100;
+                this.width = 100; // Increased size
+                this.height = 100; // Increased size
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://example.com/memebtc_logo.png';
+                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
             }
 
             draw() {
@@ -103,13 +104,13 @@
 
         class Coin {
             constructor(type) {
-                this.width = 60;
-                this.height = 60;
+                this.width = 60; // Increased size
+                this.height = 60; // Increased size
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://example.com/bitcoin_coin.png' : 'https://example.com/cardano_coin.png';
+                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
             }
 
             draw() {
@@ -124,12 +125,12 @@
 
         class Obstacle {
             constructor() {
-                this.width = 80;
-                this.height = 80;
+                this.width = 80; // Increased size
+                this.height = 80; // Increased size
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://example.com/obstacle.png';
+                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
                 this.hasCollided = false;
             }
 
@@ -188,6 +189,7 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
+                // Collision detection for coins
                 if (
                     memeBTC.x < coin.x + coin.width &&
                     memeBTC.x + memeBTC.width > coin.x &&
@@ -212,7 +214,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = 'white'; // Changed to white for visibility
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
