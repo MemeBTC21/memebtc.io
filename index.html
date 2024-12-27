@@ -29,6 +29,13 @@
             width: 30px;
             height: 30px;
         }
+        .scoreboard {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+        }
         .modal {
             display: none;
             position: absolute;
@@ -69,6 +76,11 @@
                 top: 5px;
                 right: 5px;
             }
+            .scoreboard {
+                top: 70px; /* Adjusted to avoid collision with icons */
+                left: 5px;
+                font-size: 18px;
+            }
             canvas {
                 width: 100vw;
                 height: 100vh;
@@ -99,6 +111,9 @@
         <a href="https://www.jpg.store/collection/5edd427a40baa134287b5e48f54257bcdfc73eb6a6076b9d82a196ab?tab=items&listingTypes=SINGLE_ASSET&saleType=buy-now" target="_blank">
             <img src="https://img.icons8.com/ios-filled/50/000000/nft.png" alt="Buy NFT" class="icon">
         </a>
+    </div>
+    <div class="scoreboard" id="scoreboard">
+        Bitcoin: 0 | Cardano: 0 | Level: 1
     </div>
     <div id="startModal" class="modal">
         <h2>Welcome to MemeBTC Game!</h2>
@@ -289,7 +304,7 @@
             frame++;
             ctx.font = '20px Arial';
             ctx.fillStyle = 'white';
-            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
+            document.getElementById('scoreboard').innerText = `Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`;
 
             requestAnimationFrame(animate);
         }
