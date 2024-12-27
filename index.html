@@ -9,16 +9,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-            color: white; /* Ensure all body text is white */
+            background: linear-gradient(to bottom, blue, orange);
         }
-        #videoBackground {
-            position: fixed;
+        canvas {
+            display: block;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            pointer-events: none; /* Ensure the iframe does not block canvas interactions */
         }
         #muteButton {
             position: fixed;
@@ -29,44 +28,23 @@
             color: white;
             border: 2px solid white;
             cursor: pointer;
-            z-index: 1000; /* Ensure button is above everything else */
-        }
-        canvas {
-            display: block;
-            position: absolute; /* Ensure canvas is positioned correctly */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Ensure canvas is above the iframe */
         }
     </style>
 </head>
 <body>
-    <iframe id="videoBackground" 
-            src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-    </iframe>
     <canvas id="gameCanvas"></canvas>
     <button id="muteButton" onclick="toggleMute()">Mute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const muteButton = document.getElementById('muteButton');
-        const videoBackground = document.getElementById('videoBackground');
 
         // Adjust canvas to fill the screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Mute/Unmute the YouTube background
-        let isMuted = true;
+        // Mute functionality (placeholder as no YouTube video exists)
         function toggleMute() {
-            isMuted = !isMuted;
-            videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
-            muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
+            alert('No background audio to mute/unmute.');
         }
 
         // Game variables
@@ -238,30 +216,6 @@
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
-        }
-
-        function checkLevelUp() {
-            if (scoreBTC + scoreADA >= 20 && level === 1) {
-                level = 2;
-                updateLevelSettings();
-                alert("Congratulations! You've reached Level 2!");
-            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
-                level = 3;
-                updateLevelSettings();
-                alert("Congratulations! You've reached Level 3!");
-            }
-
-            if (scoreBTC + scoreADA === 100) {
-                alert("Amazing! You've collected 100 coins!");
-            } else if (scoreBTC + scoreADA === 200) {
-                alert("You're a Multi-Millionaire! Congratulations!");
-            }
-        }
-
-        function updateLevelSettings() {
-            speedMultiplier = levels[level].speed;
-            coinSpawnRate = levels[level].coinRate;
-            obstacleSpawnRate = levels[level].obstacleRate;
         }
 
         document.addEventListener('keydown', (e) => {
