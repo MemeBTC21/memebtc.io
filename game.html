@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
+            color: white; /* Ensure all body text is white */
         }
         #videoBackground {
             position: fixed;
@@ -233,10 +234,10 @@
                 if (
                     this.x + this.width < player.x ||
                     this.x > player.x + player.width ||
-                    this.y + this.height < player.y ||
+                    this.y + this height < player.y ||
                     this.y > player.y + player.height
                 ) {
-                    this.hasCollided = false;
+                    this hasCollided = false;
                 }
             }
         }
@@ -288,7 +289,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white'; // Ensure text color is white
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
@@ -298,7 +299,7 @@
             if (e.code === 'ArrowUp') {
                 memeBTC.moveUp();
             } else if (e.code === 'ArrowDown') {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
@@ -307,7 +308,7 @@
             if (touchY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
@@ -316,7 +317,7 @@
             if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC.moveDown();
+                memeBTC moveDown();
             }
         });
 
