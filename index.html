@@ -296,11 +296,11 @@
             }
 
             checkCollision(player) {
-                const distX = this.x + this.radius - (player.x + player.radius);
-                const distY = this.y + this.radius - (player.y + player.radius);
+                const distX = this.x + this radius - (player.x + player radius);
+                const distY = this.y + this radius - (player.y + player radius);
                 const distance = Math.sqrt(distX * distX + distY * distY);
 
-                if (distance < this.radius + player.radius) {
+                if (distance < this radius + player radius) {
                     if (!this.hasCollided) {
                         this.hasCollided = true;
                         document.getElementById('startModal').style.display = 'block';
@@ -333,18 +333,18 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                const distX = memeBTC.x + memeBTC.radius - (coin.x + coin.radius);
-                const distY = memeBTC.y + memeBTC.radius - (coin.y + coin.radius);
+                const distX = memeBTC.x + memeBTC radius - (coin.x + coin radius);
+                const distY = memeBTC.y + memeBTC radius - (coin.y + coin radius);
                 const distance = Math.sqrt(distX * distX + distY * distY);
 
-                if (distance < memeBTC.radius + coin.radius) {
-                    if (coin.type === 'BTC') scoreBTC++;
+                if (distance < memeBTC radius + coin radius) {
+                    if (coin type === 'BTC') scoreBTC++;
                     else scoreADA++;
                     coins.splice(index, 1);
                     checkLevelUp();
                 }
 
-                if (coin.x + coin.radius * 2 < 0) {
+                if (coin.x + coin radius * 2 < 0) {
                     coins.splice(index, 1);
                 }
             });
