@@ -9,11 +9,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
+            background: linear-gradient(to bottom, blue, orange);
         }
         canvas {
             display: block;
-            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
-            background-size: cover;
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
@@ -22,6 +23,7 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -66,13 +68,13 @@
 
         class MemeBTC {
             constructor() {
-                this.width = 100; // Increased size
-                this.height = 100; // Increased size
+                this.width = 100;
+                this.height = 100;
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
+                this.image.src = 'https://example.com/memebtc_logo.png';
             }
 
             draw() {
@@ -104,13 +106,13 @@
 
         class Coin {
             constructor(type) {
-                this.width = 60; // Increased size
-                this.height = 60; // Increased size
+                this.width = 60;
+                this.height = 60;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
+                this.image.src = type === 'BTC' ? 'https://example.com/bitcoin_coin.png' : 'https://example.com/cardano_coin.png';
             }
 
             draw() {
@@ -125,12 +127,12 @@
 
         class Obstacle {
             constructor() {
-                this.width = 80; // Increased size
-                this.height = 80; // Increased size
+                this.width = 80;
+                this.height = 80;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
+                this.image.src = 'https://example.com/obstacle.png';
                 this.hasCollided = false;
             }
 
@@ -189,12 +191,11 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                // Collision detection for coins
                 if (
                     memeBTC.x < coin.x + coin.width &&
                     memeBTC.x + memeBTC.width > coin.x &&
                     memeBTC.y < coin.y + coin.height &&
-                    memeBTC.y + memeBTC.height > coin.y
+                    memeBTC.y + coin.height > coin.y
                 ) {
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
@@ -214,7 +215,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'white';
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
@@ -231,6 +232,15 @@
         document.addEventListener('touchstart', (e) => {
             const touchY = e.touches[0].clientY;
             if (touchY < canvas.height / 2) {
+                memeBTC.moveUp();
+            } else {
+                memeBTC.moveDown();
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseY = e.clientY;
+            if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
                 memeBTC.moveDown();
