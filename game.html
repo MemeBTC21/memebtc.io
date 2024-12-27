@@ -12,7 +12,7 @@
         }
         canvas {
             display: block;
-            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
+            background: url('https://youtu.be/zRgsMMU29Q8') no-repeat center center;
             background-size: cover;
         }
         #customAlert {
@@ -36,6 +36,17 @@
             border: none;
             cursor: pointer;
         }
+        #muteButton {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -44,11 +55,22 @@
         <p id="alertMessage"></p>
         <button onclick="closeAlert()">OK</button>
     </div>
+    <button id="muteButton" onclick="toggleMute()">Mute</button>
+    <audio id="backgroundAudio" src="https://youtu.be/zRgsMMU29Q8" autoplay loop></audio>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const backgroundAudio = document.getElementById('backgroundAudio');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        let isMuted = false;
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            backgroundAudio.muted = isMuted;
+            document.getElementById('muteButton').innerText = isMuted ? 'Unmute' : 'Mute';
+        }
 
         const gravity = 0.5;
         const lift = -1.5;
@@ -108,7 +130,7 @@
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
+                this.image.src = 'https://youtube.com/shorts/kGVCskoXnx4';
             }
 
             draw() {
@@ -146,7 +168,7 @@
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
+                this.image.src = type === 'BTC' ? 'https://youtube.com/shorts/kGVCskoXnx4' : 'https://youtu.be/B6jFR5h_5t4';
             }
 
             draw() {
@@ -166,7 +188,7 @@
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
+                this.image.src = 'https://youtu.be/h8NZKeVXHUo';
                 this.hasCollided = false;
             }
 
