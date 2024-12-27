@@ -19,7 +19,6 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
-            background-color: black;
         }
         #customAlert {
             display: none;
@@ -61,7 +60,12 @@
     </style>
 </head>
 <body>
-    <div id="videoBackground"></div>
+    <iframe id="videoBackground" 
+            src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+    </iframe>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
@@ -78,48 +82,11 @@
         canvas.height = window.innerHeight;
 
         let isMuted = true;
-        let player;
-
-        // Load the IFrame Player API code asynchronously.
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // Replace the 'videoBackground' div with an <iframe> and YouTube player after the API code downloads.
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('videoBackground', {
-                videoId: 'zRgsMMU29Q8',
-                playerVars: {
-                    autoplay: 1,
-                    mute: 1,
-                    loop: 1,
-                    playlist: 'zRgsMMU29Q8',
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    iv_load_policy: 3,
-                    fs: 0
-                },
-                events: {
-                    onReady: onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
 
         function toggleMute() {
-            if (isMuted) {
-                player.unMute();
-                muteButton.innerText = 'Mute';
-            } else {
-                player.mute();
-                muteButton.innerText = 'Unmute';
-            }
             isMuted = !isMuted;
+            videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
+            muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
         }
 
         const gravity = 0.5;
@@ -322,7 +289,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white'; // Ensure text color is white
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
