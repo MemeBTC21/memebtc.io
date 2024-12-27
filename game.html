@@ -60,12 +60,7 @@
     </style>
 </head>
 <body>
-    <iframe id="videoBackground" 
-            src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-    </iframe>
+    <div id="videoBackground"></div>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
@@ -82,10 +77,46 @@
         canvas.height = window.innerHeight;
 
         let isMuted = true;
+        let player;
+
+        // Load the IFrame Player API code asynchronously.
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Replace the 'videoBackground' div with an <iframe> and YouTube player after the API code downloads.
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoBackground', {
+                videoId: 'zRgsMMU29Q8',
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: 'zRgsMMU29Q8',
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    iv_load_policy: 3,
+                    fs: 0
+                },
+                events: {
+                    onReady: onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
 
         function toggleMute() {
             isMuted = !isMuted;
-            videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
+            if (isMuted) {
+                player.mute();
+            } else {
+                player.unmute();
+            }
             muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
         }
 
@@ -299,7 +330,7 @@
             if (e.code === 'ArrowUp') {
                 memeBTC.moveUp();
             } else if (e.code === 'ArrowDown') {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
@@ -308,14 +339,14 @@
             if (touchY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
         document.addEventListener('mousemove', (e) => {
             const mouseY = e.clientY;
             if (mouseY < canvas.height / 2) {
-                memeBTC moveUp();
+                memeBTC.moveUp();
             } else {
                 memeBTC moveDown();
             }
