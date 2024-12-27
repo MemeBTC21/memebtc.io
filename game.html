@@ -12,7 +12,8 @@
         }
         canvas {
             display: block;
-            background-color: #87ceeb; /* Sky blue background */
+            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
@@ -30,21 +31,23 @@
         let scoreADA = 0;
         let level = 1;
         let speedMultiplier = 1;
+        let coinSpawnRate = 100;
+        let obstacleSpawnRate = 200;
 
         const levels = {
-            1: 1,
-            2: 1.5,
-            3: 2
+            1: { speed: 1, coinRate: 100, obstacleRate: 200 },
+            2: { speed: 1.5, coinRate: 80, obstacleRate: 120 },
+            3: { speed: 2, coinRate: 60, obstacleRate: 80 }
         };
 
         function checkLevelUp() {
             if (scoreBTC + scoreADA >= 20 && level === 1) {
                 level = 2;
-                speedMultiplier = levels[level];
+                updateLevelSettings();
                 alert("Congratulations! You've reached Level 2!");
             } else if (scoreBTC + scoreADA >= 50 && level === 2) {
                 level = 3;
-                speedMultiplier = levels[level];
+                updateLevelSettings();
                 alert("Congratulations! You've reached Level 3!");
             }
 
@@ -55,15 +58,21 @@
             }
         }
 
+        function updateLevelSettings() {
+            speedMultiplier = levels[level].speed;
+            coinSpawnRate = levels[level].coinRate;
+            obstacleSpawnRate = levels[level].obstacleRate;
+        }
+
         class MemeBTC {
             constructor() {
-                this.width = 50;
-                this.height = 50;
+                this.width = 100; // Increased size
+                this.height = 100; // Increased size
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://via.placeholder.com/50x50.png?text=MemeBTC';
+                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
             }
 
             draw() {
@@ -95,13 +104,13 @@
 
         class Coin {
             constructor(type) {
-                this.width = 30;
-                this.height = 30;
+                this.width = 60; // Increased size
+                this.height = 60; // Increased size
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://via.placeholder.com/30x30.png?text=BTC' : 'https://via.placeholder.com/30x30.png?text=ADA';
+                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
             }
 
             draw() {
@@ -116,12 +125,12 @@
 
         class Obstacle {
             constructor() {
-                this.width = 40;
-                this.height = 40;
+                this.width = 80; // Increased size
+                this.height = 80; // Increased size
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://via.placeholder.com/40x40.png?text=Obstacle';
+                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
                 this.hasCollided = false;
             }
 
@@ -168,9 +177,12 @@
 
             memeBTC.update();
 
-            if (frame % 100 === 0) {
+            if (frame % coinSpawnRate === 0) {
                 const type = Math.random() > 0.5 ? 'BTC' : 'ADA';
                 coins.push(new Coin(type));
+            }
+
+            if (frame % obstacleSpawnRate === 0) {
                 obstacles.push(new Obstacle());
             }
 
@@ -219,6 +231,15 @@
         document.addEventListener('touchstart', (e) => {
             const touchY = e.touches[0].clientY;
             if (touchY < canvas.height / 2) {
+                memeBTC.moveUp();
+            } else {
+                memeBTC.moveDown();
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseY = e.clientY;
+            if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
                 memeBTC.moveDown();
