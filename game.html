@@ -12,8 +12,7 @@
         }
         canvas {
             display: block;
-            background: url('background.jpg') no-repeat center center;
-            background-size: cover;
+            background-color: #87ceeb; /* Sky blue background */
         }
     </style>
 </head>
@@ -38,7 +37,7 @@
                 this.velocityY = 0;
                 this.jumpPower = -10;
                 this.image = new Image();
-                this.image.src = 'memebtc.png';
+                this.image.src = 'https://via.placeholder.com/50x50.png?text=MemeBTC';
             }
 
             draw() {
@@ -72,7 +71,7 @@
                 this.y = canvas.height - this.height - Math.random() * 100;
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'bitcoin.png' : 'cardano.png';
+                this.image.src = type === 'BTC' ? 'https://via.placeholder.com/30x30.png?text=BTC' : 'https://via.placeholder.com/30x30.png?text=ADA';
             }
 
             draw() {
@@ -92,7 +91,7 @@
                 this.x = canvas.width;
                 this.y = canvas.height - this.height - Math.random() * 100;
                 this.image = new Image();
-                this.image.src = 'obstacle.png';
+                this.image.src = 'https://via.placeholder.com/40x40.png?text=Obstacle';
             }
 
             draw() {
@@ -149,7 +148,7 @@
                     memeBTC.x < obstacle.x + obstacle.width &&
                     memeBTC.x + memeBTC.width > obstacle.x &&
                     memeBTC.y < obstacle.y + obstacle.height &&
-                    memeBTC.y + memeBTC.height > obstacle.y
+                    memeBTC.y + obstacle.height > obstacle.y
                 ) {
                     alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
                     document.location.reload();
