@@ -96,6 +96,7 @@
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
                 this.image.src = 'https://via.placeholder.com/40x40.png?text=Obstacle';
+                this.hasCollided = false;
             }
 
             draw() {
@@ -105,6 +106,29 @@
             update() {
                 this.x -= 6;
                 this.draw();
+            }
+
+            checkCollision(player) {
+                if (
+                    !this.hasCollided &&
+                    player.x < this.x + this.width &&
+                    player.x + player.width > this.x &&
+                    player.y < this.y + this.height &&
+                    player.y + player.height > this.y
+                ) {
+                    this.hasCollided = true;
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    document.location.reload();
+                }
+
+                if (
+                    this.x + this.width < player.x ||
+                    this.x > player.x + player.width ||
+                    this.y + this.height < player.y ||
+                    this.y > player.y + player.height
+                ) {
+                    this.hasCollided = false;
+                }
             }
         }
 
@@ -144,23 +168,9 @@
                 }
             });
 
-            obstacles.forEach((obstacle, index) => {
+            obstacles.forEach((obstacle) => {
                 obstacle.update();
-
-                // Collision detection for obstacles
-                if (
-                    memeBTC.x < obstacle.x + obstacle.width &&
-                    memeBTC.x + memeBTC.width > obstacle.x &&
-                    memeBTC.y < obstacle.y + obstacle.height &&
-                    memeBTC.y + obstacle.height > obstacle.y
-                ) {
-                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
-                    document.location.reload();
-                }
-
-                if (obstacle.x + obstacle.width < 0) {
-                    obstacles.splice(index, 1);
-                }
+                obstacle.checkCollision(memeBTC);
             });
 
             frame++;
