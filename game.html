@@ -194,7 +194,7 @@
                     memeBTC.x < coin.x + coin.width &&
                     memeBTC.x + memeBTC.width > coin.x &&
                     memeBTC.y < coin.y + coin.height &&
-                    memeBTC.y + memeBTC.height > coin.y
+                    memeBTC.y + coin.height > coin.y
                 ) {
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
@@ -214,7 +214,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'white'; // Changed to white for visibility
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
