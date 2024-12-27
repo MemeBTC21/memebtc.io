@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MemeBTC: The Prince of Cryptocurrency</title>
+    <title>MemeBTC: The White Paper</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,12 +17,15 @@
             background-color: #222;
             color: #fff;
             padding: 20px 10px;
-            text-align: center;
+            text-align: left; /* Align text to the left */
         }
         header img {
             height: 50px;
             margin: 0 10px;
             vertical-align: middle;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
         main {
             padding: 20px;
@@ -51,18 +54,30 @@
         .links a:hover {
             text-decoration: underline;
         }
+        @media (max-width: 600px) {
+            header {
+                text-align: center;
+            }
+            header img {
+                position: static;
+                display: block;
+                margin: 0 auto 10px;
+            }
+            main {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <img src="https://bitcoin.org/img/icons/opengraph.png" alt="Bitcoin Logo">
-        <h1>MemeBTC: The Prince of Cryptocurrency</h1>
-        <img src="https://cardano.org/static/media/cardano.9aa7f3f9.png" alt="Cardano Logo">
+        <img src="https://example.com/memebtc_logo.png" alt="MemeBTC Logo">
+        <h1>MemeBTC: The White Paper</h1>
     </header>
     <main>
         <section>
             <h2>Welcome to the MemeBTC Family!</h2>
-            <p>Introducing <strong>MemeBTC</strong>, the ingenious offspring of King Bitcoin and Queen Cardano. MemeBTC is not just another memecoin. It is a fun, educational, and innovative project built on the <strong>Cardano blockchain</strong>, aiming to transform the crypto space by combining humor with serious blockchain principles. With a <strong>limited supply of 21 million tokens</strong>, MemeBTC offers unique investment value and a strong community-driven focus.</p>
+            <p>Introducing <strong>MemeBTC</strong>, the ingenious offspring of King Bitcoin and Queen Cardano. MemeBTC is not just another memecoin. It is a fun, educational, and innovative project bringing together the best of both worlds.</p>
         </section>
         <section>
             <h2>The MemeBTC Royal Family</h2>
