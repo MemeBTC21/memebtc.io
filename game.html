@@ -25,6 +25,7 @@
         canvas.height = window.innerHeight;
 
         const gravity = 0.5;
+        const lift = -1.5;
         let scoreBTC = 0;
         let scoreADA = 0;
 
@@ -33,9 +34,8 @@
                 this.width = 50;
                 this.height = 50;
                 this.x = 50;
-                this.y = canvas.height - this.height;
+                this.y = canvas.height / 2;
                 this.velocityY = 0;
-                this.jumpPower = -10;
                 this.image = new Image();
                 this.image.src = 'https://via.placeholder.com/50x50.png?text=MemeBTC';
             }
@@ -44,19 +44,23 @@
                 ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
-            jump() {
-                if (this.y === canvas.height - this.height) {
-                    this.velocityY = this.jumpPower;
-                }
+            moveUp() {
+                this.velocityY = lift * 10;
+            }
+
+            moveDown() {
+                this.velocityY = -lift * 10;
             }
 
             update() {
                 this.velocityY += gravity;
                 this.y += this.velocityY;
 
+                if (this.y < 0) {
+                    this.y = 0;
+                }
                 if (this.y > canvas.height - this.height) {
                     this.y = canvas.height - this.height;
-                    this.velocityY = 0;
                 }
 
                 this.draw();
@@ -68,7 +72,7 @@
                 this.width = 30;
                 this.height = 30;
                 this.x = canvas.width;
-                this.y = canvas.height - this.height - Math.random() * 100;
+                this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
                 this.image.src = type === 'BTC' ? 'https://via.placeholder.com/30x30.png?text=BTC' : 'https://via.placeholder.com/30x30.png?text=ADA';
@@ -89,7 +93,7 @@
                 this.width = 40;
                 this.height = 40;
                 this.x = canvas.width;
-                this.y = canvas.height - this.height - Math.random() * 100;
+                this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
                 this.image.src = 'https://via.placeholder.com/40x40.png?text=Obstacle';
             }
@@ -168,13 +172,20 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.code === 'ShiftLeft') {
-                memeBTC.jump();
+            if (e.code === 'ArrowUp') {
+                memeBTC.moveUp();
+            } else if (e.code === 'ArrowDown') {
+                memeBTC.moveDown();
             }
         });
 
-        document.addEventListener('touchstart', () => {
-            memeBTC.jump();
+        document.addEventListener('touchstart', (e) => {
+            const touchY = e.touches[0].clientY;
+            if (touchY < canvas.height / 2) {
+                memeBTC.moveUp();
+            } else {
+                memeBTC.moveDown();
+            }
         });
 
         requestAnimationFrame(animate);
