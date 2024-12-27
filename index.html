@@ -11,83 +11,20 @@
             overflow: hidden;
             color: white; /* Ensure all body text is white */
         }
-        #videoBackground {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        #customAlert {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: black;
-            color: white;
-            padding: 20px;
-            border: 2px solid white;
-            text-align: center;
-            z-index: 1000;
-        }
-        #customAlert button {
-            margin-top: 10px;
-            padding: 10px;
-            background: white;
-            color: black;
-            border: none;
-            cursor: pointer;
-        }
-        #muteButton {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background: black;
-            color: white;
-            border: 2px solid white;
-            cursor: pointer;
-            z-index: 1000;
-        }
         canvas {
             display: block;
-            position: relative;
-            z-index: 1;
+            background: url('https://memebtc.io/MemeBTC%20Background%20game.gif') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
 <body>
-    <iframe id="videoBackground" 
-            src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-    </iframe>
     <canvas id="gameCanvas"></canvas>
-    <div id="customAlert">
-        <p id="alertMessage"></p>
-        <button onclick="closeAlert()">OK</button>
-    </div>
-    <button id="muteButton" onclick="toggleMute()">Mute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const muteButton = document.getElementById('muteButton');
-        const videoBackground = document.getElementById('videoBackground');
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        let isMuted = true;
-
-        function toggleMute() {
-            isMuted = !isMuted;
-            videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
-            muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
-        }
 
         const gravity = 0.5;
         const lift = -1.5;
@@ -108,17 +45,17 @@
             if (scoreBTC + scoreADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 2!");
+                alert("Congratulations! You've reached Level 2!"); // Alert text color is browser-dependent
             } else if (scoreBTC + scoreADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 3!");
+                alert("Congratulations! You've reached Level 3!"); // Alert text color is browser-dependent
             }
 
             if (scoreBTC + scoreADA === 100) {
-                showAlert("Amazing! You've collected 100 coins!");
+                alert("Amazing! You've collected 100 coins!"); // Alert text color is browser-dependent
             } else if (scoreBTC + scoreADA === 200) {
-                showAlert("You're a Multi-Millionaire! Congratulations!");
+                alert("You're a Multi-Millionaire! Congratulations!"); // Alert text color is browser-dependent
             }
         }
 
@@ -126,17 +63,6 @@
             speedMultiplier = levels[level].speed;
             coinSpawnRate = levels[level].coinRate;
             obstacleSpawnRate = levels[level].obstacleRate;
-        }
-
-        function showAlert(message) {
-            const customAlert = document.getElementById('customAlert');
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.innerText = message;
-            customAlert.style.display = 'block';
-        }
-
-        function closeAlert() {
-            document.getElementById('customAlert').style.display = 'none';
         }
 
         class MemeBTC {
@@ -147,7 +73,7 @@
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://youtube.com/shorts/kGVCskoXnx4';
+                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
             }
 
             draw() {
@@ -185,7 +111,7 @@
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://youtube.com/shorts/kGVCskoXnx4' : 'https://youtu.be/B6jFR5h_5t4';
+                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
             }
 
             draw() {
@@ -205,7 +131,7 @@
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://youtu.be/h8NZKeVXHUo';
+                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
                 this.hasCollided = false;
             }
 
@@ -227,17 +153,17 @@
                     player.y + player.height > this.y
                 ) {
                     this.hasCollided = true;
-                    showAlert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`); // Alert text color is browser-dependent
                     document.location.reload();
                 }
 
                 if (
                     this.x + this.width < player.x ||
                     this.x > player.x + player.width ||
-                    this.y + this.height < player.y ||
+                    this.y + this height < player.y ||
                     this.y > player.y + player.height
                 ) {
-                    this.hasCollided = false;
+                    this hasCollided = false;
                 }
             }
         }
@@ -315,7 +241,7 @@
         document.addEventListener('mousemove', (e) => {
             const mouseY = e.clientY;
             if (mouseY < canvas.height / 2) {
-                memeBTC moveUp();
+                memeBTC.moveUp();
             } else {
                 memeBTC moveDown();
             }
