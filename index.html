@@ -19,27 +19,6 @@
             z-index: -1;
             pointer-events: none;
         }
-        #customAlert {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: black;
-            color: white;
-            padding: 20px;
-            border: 2px solid white;
-            text-align: center;
-            z-index: 1000;
-        }
-        #customAlert button {
-            margin-top: 10px;
-            padding: 10px;
-            background: white;
-            color: black;
-            border: none;
-            cursor: pointer;
-        }
         #muteButton {
             position: fixed;
             top: 10px;
@@ -66,10 +45,6 @@
             allowfullscreen>
     </iframe>
     <canvas id="gameCanvas"></canvas>
-    <div id="customAlert">
-        <p id="alertMessage"></p>
-        <button onclick="closeAlert()">OK</button>
-    </div>
     <button id="muteButton" onclick="toggleMute()">Mute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -77,17 +52,19 @@
         const muteButton = document.getElementById('muteButton');
         const videoBackground = document.getElementById('videoBackground');
 
+        // Adjust canvas to fill the screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Mute/Unmute the YouTube background
         let isMuted = true;
-
         function toggleMute() {
             isMuted = !isMuted;
             videoBackground.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
             muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
         }
 
+        // Game variables
         const gravity = 0.5;
         const lift = -1.5;
         let scoreBTC = 0;
@@ -103,50 +80,15 @@
             3: { speed: 2, coinRate: 60, obstacleRate: 80 }
         };
 
-        function checkLevelUp() {
-            if (scoreBTC + scoreADA >= 20 && level === 1) {
-                level = 2;
-                updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 2!");
-            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
-                level = 3;
-                updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 3!");
-            }
-
-            if (scoreBTC + scoreADA === 100) {
-                showAlert("Amazing! You've collected 100 coins!");
-            } else if (scoreBTC + scoreADA === 200) {
-                showAlert("You're a Multi-Millionaire! Congratulations!");
-            }
-        }
-
-        function updateLevelSettings() {
-            speedMultiplier = levels[level].speed;
-            coinSpawnRate = levels[level].coinRate;
-            obstacleSpawnRate = levels[level].obstacleRate;
-        }
-
-        function showAlert(message) {
-            const customAlert = document.getElementById('customAlert');
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.innerText = message;
-            customAlert.style.display = 'block';
-        }
-
-        function closeAlert() {
-            document.getElementById('customAlert').style.display = 'none';
-        }
-
         class MemeBTC {
             constructor() {
-                this.width = 100; // Increased size
-                this.height = 100; // Increased size
+                this.width = 100;
+                this.height = 100;
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
                 this.image = new Image();
-                this.image.src = 'https://youtube.com/shorts/kGVCskoXnx4';
+                this.image.src = 'https://example.com/memebtc_logo.png';
             }
 
             draw() {
@@ -178,13 +120,13 @@
 
         class Coin {
             constructor(type) {
-                this.width = 60; // Increased size
-                this.height = 60; // Increased size
+                this.width = 60;
+                this.height = 60;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.type = type;
                 this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://youtube.com/shorts/kGVCskoXnx4' : 'https://youtu.be/B6jFR5h_5t4';
+                this.image.src = type === 'BTC' ? 'https://example.com/bitcoin_coin.png' : 'https://example.com/cardano_coin.png';
             }
 
             draw() {
@@ -199,12 +141,12 @@
 
         class Obstacle {
             constructor() {
-                this.width = 80; // Increased size
-                this.height = 80; // Increased size
+                this.width = 80;
+                this.height = 80;
                 this.x = canvas.width;
                 this.y = Math.random() * (canvas.height - this.height);
                 this.image = new Image();
-                this.image.src = 'https://youtu.be/h8NZKeVXHUo';
+                this.image.src = 'https://example.com/obstacle.png';
                 this.hasCollided = false;
             }
 
@@ -226,7 +168,7 @@
                     player.y + player.height > this.y
                 ) {
                     this.hasCollided = true;
-                    showAlert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
                     document.location.reload();
                 }
 
@@ -263,7 +205,6 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                // Collision detection for coins
                 if (
                     memeBTC.x < coin.x + coin.width &&
                     memeBTC.x + memeBTC.width > coin.x &&
@@ -288,7 +229,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white';
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
