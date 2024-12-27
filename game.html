@@ -28,6 +28,32 @@
         const lift = -1.5;
         let scoreBTC = 0;
         let scoreADA = 0;
+        let level = 1;
+        let speedMultiplier = 1;
+
+        const levels = {
+            1: 1,
+            2: 1.5,
+            3: 2
+        };
+
+        function checkLevelUp() {
+            if (scoreBTC + scoreADA >= 20 && level === 1) {
+                level = 2;
+                speedMultiplier = levels[level];
+                alert("Congratulations! You've reached Level 2!");
+            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
+                level = 3;
+                speedMultiplier = levels[level];
+                alert("Congratulations! You've reached Level 3!");
+            }
+
+            if (scoreBTC + scoreADA === 100) {
+                alert("Amazing! You've collected 100 coins!");
+            } else if (scoreBTC + scoreADA === 200) {
+                alert("You're a Multi-Millionaire! Congratulations!");
+            }
+        }
 
         class MemeBTC {
             constructor() {
@@ -83,7 +109,7 @@
             }
 
             update() {
-                this.x -= 5;
+                this.x -= 5 * speedMultiplier;
                 this.draw();
             }
         }
@@ -104,7 +130,7 @@
             }
 
             update() {
-                this.x -= 6;
+                this.x -= 6 * speedMultiplier;
                 this.draw();
             }
 
@@ -161,6 +187,7 @@
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
                     coins.splice(index, 1);
+                    checkLevelUp();
                 }
 
                 if (coin.x + coin.width < 0) {
@@ -176,7 +203,7 @@
             frame++;
             ctx.font = '20px Arial';
             ctx.fillStyle = 'black';
-            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA}`, 20, 30);
+            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
         }
