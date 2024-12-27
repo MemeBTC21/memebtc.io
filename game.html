@@ -234,10 +234,10 @@
                 if (
                     this.x + this.width < player.x ||
                     this.x > player.x + player.width ||
-                    this.y + this height < player.y ||
+                    this.y + this.height < player.y ||
                     this.y > player.y + player.height
                 ) {
-                    this hasCollided = false;
+                    this.hasCollided = false;
                 }
             }
         }
@@ -315,7 +315,7 @@
         document.addEventListener('mousemove', (e) => {
             const mouseY = e.clientY;
             if (mouseY < canvas.height / 2) {
-                memeBTC.moveUp();
+                memeBTC moveUp();
             } else {
                 memeBTC moveDown();
             }
