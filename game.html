@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
+            color: white; /* Ensure all body text is white */
         }
         canvas {
             display: block;
@@ -44,17 +45,17 @@
             if (scoreBTC + scoreADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
-                alert("Congratulations! You've reached Level 2!");
+                alert("Congratulations! You've reached Level 2!"); // Alert text color is browser-dependent
             } else if (scoreBTC + scoreADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
-                alert("Congratulations! You've reached Level 3!");
+                alert("Congratulations! You've reached Level 3!"); // Alert text color is browser-dependent
             }
 
             if (scoreBTC + scoreADA === 100) {
-                alert("Amazing! You've collected 100 coins!");
+                alert("Amazing! You've collected 100 coins!"); // Alert text color is browser-dependent
             } else if (scoreBTC + scoreADA === 200) {
-                alert("You're a Multi-Millionaire! Congratulations!");
+                alert("You're a Multi-Millionaire! Congratulations!"); // Alert text color is browser-dependent
             }
         }
 
@@ -152,7 +153,7 @@
                     player.y + player.height > this.y
                 ) {
                     this.hasCollided = true;
-                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`); // Alert text color is browser-dependent
                     document.location.reload();
                 }
 
@@ -214,7 +215,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white'; // Ensure text color is white
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
@@ -231,9 +232,9 @@
         document.addEventListener('touchstart', (e) => {
             const touchY = e.touches[0].clientY;
             if (touchY < canvas.height / 2) {
-                memeBTC moveUp();
+                memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
@@ -242,7 +243,7 @@
             if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
