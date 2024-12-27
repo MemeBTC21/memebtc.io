@@ -12,7 +12,8 @@
         }
         canvas {
             display: block;
-            background: #f0f0f0;
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
@@ -25,7 +26,8 @@
         canvas.height = window.innerHeight;
 
         const gravity = 0.5;
-        let score = 0;
+        let scoreBTC = 0;
+        let scoreADA = 0;
 
         class MemeBTC {
             constructor() {
@@ -35,11 +37,12 @@
                 this.y = canvas.height - this.height;
                 this.velocityY = 0;
                 this.jumpPower = -10;
+                this.image = new Image();
+                this.image.src = 'memebtc.png';
             }
 
             draw() {
-                ctx.fillStyle = 'orange';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
             jump() {
@@ -61,17 +64,19 @@
             }
         }
 
-        class Bitcoin {
-            constructor() {
+        class Coin {
+            constructor(type) {
                 this.width = 30;
                 this.height = 30;
                 this.x = canvas.width;
                 this.y = canvas.height - this.height - Math.random() * 100;
+                this.type = type;
+                this.image = new Image();
+                this.image.src = type === 'BTC' ? 'bitcoin.png' : 'cardano.png';
             }
 
             draw() {
-                ctx.fillStyle = 'gold';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
             update() {
@@ -85,22 +90,23 @@
                 this.width = 40;
                 this.height = 40;
                 this.x = canvas.width;
-                this.y = canvas.height - this.height;
+                this.y = canvas.height - this.height - Math.random() * 100;
+                this.image = new Image();
+                this.image.src = 'obstacle.png';
             }
 
             draw() {
-                ctx.fillStyle = 'red';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
             update() {
-                this.x -= 5;
+                this.x -= 6;
                 this.draw();
             }
         }
 
         const memeBTC = new MemeBTC();
-        let bitcoins = [];
+        let coins = [];
         let obstacles = [];
         let frame = 0;
 
@@ -110,42 +116,43 @@
             memeBTC.update();
 
             if (frame % 100 === 0) {
-                bitcoins.push(new Bitcoin());
+                const type = Math.random() > 0.5 ? 'BTC' : 'ADA';
+                coins.push(new Coin(type));
                 obstacles.push(new Obstacle());
             }
 
-            bitcoins.forEach((bitcoin, index) => {
-                bitcoin.update();
+            coins.forEach((coin, index) => {
+                coin.update();
 
-                // Collision detection
+                // Collision detection for coins
                 if (
-                    memeBTC.x < bitcoin.x + bitcoin.width &&
-                    memeBTC.x + memeBTC.width > bitcoin.x &&
-                    memeBTC.y < bitcoin.y + bitcoin.height &&
-                    memeBTC.y + memeBTC.height > bitcoin.y
+                    memeBTC.x < coin.x + coin.width &&
+                    memeBTC.x + memeBTC.width > coin.x &&
+                    memeBTC.y < coin.y + coin.height &&
+                    memeBTC.y + memeBTC.height > coin.y
                 ) {
-                    bitcoins.splice(index, 1);
-                    score++;
-                    console.log('Score:', score);
+                    if (coin.type === 'BTC') scoreBTC++;
+                    else scoreADA++;
+                    coins.splice(index, 1);
                 }
 
-                if (bitcoin.x + bitcoin.width < 0) {
-                    bitcoins.splice(index, 1);
+                if (coin.x + coin.width < 0) {
+                    coins.splice(index, 1);
                 }
             });
 
             obstacles.forEach((obstacle, index) => {
                 obstacle.update();
 
-                // Collision detection
+                // Collision detection for obstacles
                 if (
                     memeBTC.x < obstacle.x + obstacle.width &&
                     memeBTC.x + memeBTC.width > obstacle.x &&
                     memeBTC.y < obstacle.y + obstacle.height &&
                     memeBTC.y + memeBTC.height > obstacle.y
                 ) {
-                    console.log('Game Over');
-                    cancelAnimationFrame(animationId);
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    document.location.reload();
                 }
 
                 if (obstacle.x + obstacle.width < 0) {
@@ -154,16 +161,24 @@
             });
 
             frame++;
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'black';
+            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA}`, 20, 30);
+
             requestAnimationFrame(animate);
         }
 
-        let animationId = requestAnimationFrame(animate);
-
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
+            if (e.code === 'Space' || e.code === 'ShiftLeft') {
                 memeBTC.jump();
             }
         });
+
+        document.addEventListener('touchstart', () => {
+            memeBTC.jump();
+        });
+
+        requestAnimationFrame(animate);
     </script>
 </body>
 </html>
