@@ -18,6 +18,7 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            background-color: black;
         }
         iframe {
             position: absolute;
@@ -26,6 +27,20 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        #playFallbackButton {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
         }
         #customAlert {
             display: none;
@@ -68,11 +83,13 @@
 </head>
 <body>
     <div id="videoBackground">
-        <iframe id="backgroundVideo" src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
+        <iframe id="backgroundVideo" 
+                src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8&controls=0&showinfo=0&rel=0" 
                 allow="autoplay; encrypted-media" 
                 frameborder="0" 
                 allowfullscreen>
         </iframe>
+        <button id="playFallbackButton" onclick="startVideo()">Play Background Video</button>
     </div>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
@@ -85,11 +102,18 @@
         const ctx = canvas.getContext('2d');
         const muteButton = document.getElementById('muteButton');
         const iframe = document.getElementById('backgroundVideo');
+        const playFallbackButton = document.getElementById('playFallbackButton');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let isMuted = true;
+
+        // Fallback to play button if autoplay fails
+        function startVideo() {
+            iframe.src = iframe.src.replace('autoplay=1', 'autoplay=1');
+            playFallbackButton.style.display = 'none';
+        }
 
         function toggleMute() {
             const src = iframe.src;
@@ -102,6 +126,19 @@
             }
             isMuted = !isMuted;
         }
+
+        // Check if autoplay works, show play button if not
+        window.addEventListener('load', () => {
+            const testAutoplay = document.createElement('video');
+            testAutoplay.muted = true;
+            testAutoplay.autoplay = true;
+            testAutoplay.src = 'https://www.youtube.com/embed/zRgsMMU29Q8';
+            testAutoplay.play()
+                .catch(() => {
+                    console.warn('Autoplay failed, showing play button.');
+                    playFallbackButton.style.display = 'block';
+                });
+        });
 
         const gravity = 0.5;
         const lift = -1.5;
