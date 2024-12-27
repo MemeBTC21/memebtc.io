@@ -65,22 +65,29 @@
             obstacleSpawnRate = levels[level].obstacleRate;
         }
 
-        class MemeBTC {
-            constructor() {
-                this.radius = 50; // Adjusted for circle
-                this.x = 50;
-                this.y = canvas.height / 2;
-                this.velocityY = 0;
+        class CircleCharacter {
+            constructor(x, y, radius, imageSrc) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
                 this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC_Logo.gif';
+                this.image.src = imageSrc;
             }
 
             draw() {
+                ctx.save();
                 ctx.beginPath();
                 ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
                 ctx.clip();
                 ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
-                ctx.closePath();
+                ctx.restore();
+            }
+        }
+
+        class MemeBTC extends CircleCharacter {
+            constructor() {
+                super(50, canvas.height / 2, 50, 'https://memebtc.io/MemeBTC_Logo.gif');
+                this.velocityY = 0;
             }
 
             moveUp() {
@@ -106,22 +113,13 @@
             }
         }
 
-        class Coin {
+        class Coin extends CircleCharacter {
             constructor(type) {
-                this.radius = 30; // Adjusted for circle
-                this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.radius * 2);
+                const imageSrc = type === 'BTC'
+                    ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif'
+                    : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
+                super(canvas.width, Math.random() * (canvas.height - 60), 30, imageSrc);
                 this.type = type;
-                this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
-                ctx.clip();
-                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
-                ctx.closePath();
             }
 
             update() {
@@ -130,22 +128,10 @@
             }
         }
 
-        class Obstacle {
+        class Obstacle extends CircleCharacter {
             constructor() {
-                this.radius = 40; // Adjusted for circle
-                this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.radius * 2);
-                this.image = new Image();
-                this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
+                super(canvas.width, Math.random() * (canvas.height - 80), 40, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif');
                 this.hasCollided = false;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
-                ctx.clip();
-                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
-                ctx.closePath();
             }
 
             update() {
@@ -190,12 +176,11 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                if (
-                    memeBTC.x + memeBTC.radius > coin.x &&
-                    memeBTC.x < coin.x + coin.radius * 2 &&
-                    memeBTC.y + memeBTC.radius > coin.y &&
-                    memeBTC.y < coin.y + coin.radius * 2
-                ) {
+                const distX = memeBTC.x + memeBTC.radius - (coin.x + coin.radius);
+                const distY = memeBTC.y + memeBTC.radius - (coin.y + coin.radius);
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < memeBTC.radius + coin.radius) {
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
                     coins.splice(index, 1);
