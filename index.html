@@ -67,8 +67,7 @@
 
         class MemeBTC {
             constructor() {
-                this.width = 100;
-                this.height = 100;
+                this.radius = 50; // Adjusted for circle
                 this.x = 50;
                 this.y = canvas.height / 2;
                 this.velocityY = 0;
@@ -77,7 +76,11 @@
             }
 
             draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                ctx.beginPath();
+                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
+                ctx.closePath();
             }
 
             moveUp() {
@@ -95,8 +98,8 @@
                 if (this.y < 0) {
                     this.y = 0;
                 }
-                if (this.y > canvas.height - this.height) {
-                    this.y = canvas.height - this.height;
+                if (this.y > canvas.height - this.radius * 2) {
+                    this.y = canvas.height - this.radius * 2;
                 }
 
                 this.draw();
@@ -105,17 +108,20 @@
 
         class Coin {
             constructor(type) {
-                this.width = 60;
-                this.height = 60;
+                this.radius = 30; // Adjusted for circle
                 this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.height);
+                this.y = Math.random() * (canvas.height - this.radius * 2);
                 this.type = type;
                 this.image = new Image();
                 this.image.src = type === 'BTC' ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif' : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
             }
 
             draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                ctx.beginPath();
+                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
+                ctx.closePath();
             }
 
             update() {
@@ -126,17 +132,20 @@
 
         class Obstacle {
             constructor() {
-                this.width = 80;
-                this.height = 80;
+                this.radius = 40; // Adjusted for circle
                 this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.height);
+                this.y = Math.random() * (canvas.height - this.radius * 2);
                 this.image = new Image();
                 this.image.src = 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif';
                 this.hasCollided = false;
             }
 
             draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                ctx.beginPath();
+                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
+                ctx.closePath();
             }
 
             update() {
@@ -145,25 +154,16 @@
             }
 
             checkCollision(player) {
-                if (
-                    !this.hasCollided &&
-                    player.x < this.x + this.width &&
-                    player.x + player.width > this.x &&
-                    player.y < this.y + this.height &&
-                    player.y + player.height > this.y
-                ) {
-                    this.hasCollided = true;
-                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
-                    document.location.reload();
-                }
+                const distX = this.x + this.radius - (player.x + player.radius);
+                const distY = this.y + this.radius - (player.y + player.radius);
+                const distance = Math.sqrt(distX * distX + distY * distY);
 
-                if (
-                    this.x + this.width < player.x ||
-                    this.x > player.x + player.width ||
-                    this.y + this.height < player.y ||
-                    this.y > player.y + player.height
-                ) {
-                    this.hasCollided = false;
+                if (distance < this.radius + player.radius) {
+                    if (!this.hasCollided) {
+                        this.hasCollided = true;
+                        alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                        document.location.reload();
+                    }
                 }
             }
         }
@@ -191,10 +191,10 @@
                 coin.update();
 
                 if (
-                    memeBTC.x < coin.x + coin.width &&
-                    memeBTC.x + memeBTC.width > coin.x &&
-                    memeBTC.y < coin.y + coin.height &&
-                    memeBTC.y + coin.height > coin.y
+                    memeBTC.x + memeBTC.radius > coin.x &&
+                    memeBTC.x < coin.x + coin.radius * 2 &&
+                    memeBTC.y + memeBTC.radius > coin.y &&
+                    memeBTC.y < coin.y + coin.radius * 2
                 ) {
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
@@ -202,7 +202,7 @@
                     checkLevelUp();
                 }
 
-                if (coin.x + coin.width < 0) {
+                if (coin.x + coin.radius * 2 < 0) {
                     coins.splice(index, 1);
                 }
             });
