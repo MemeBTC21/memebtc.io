@@ -17,7 +17,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none;
+            pointer-events: none; /* Ensure the iframe does not block canvas interactions */
         }
         #muteButton {
             position: fixed;
@@ -28,12 +28,16 @@
             color: white;
             border: 2px solid white;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 1000; /* Ensure button is above everything else */
         }
         canvas {
             display: block;
-            position: relative;
-            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Ensure canvas is above the iframe */
         }
     </style>
 </head>
