@@ -9,7 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-            color: white; /* Ensure all body text is white */
         }
         #videoBackground {
             position: fixed;
@@ -21,26 +20,13 @@
             pointer-events: none;
             background-color: black;
         }
-        #customAlert {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: black;
-            color: white;
-            padding: 20px;
-            border: 2px solid white;
-            text-align: center;
-            z-index: 1000;
-        }
-        #customAlert button {
-            margin-top: 10px;
-            padding: 10px;
-            background: white;
-            color: black;
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             border: none;
-            cursor: pointer;
         }
         #muteButton {
             position: fixed;
@@ -61,62 +47,34 @@
     </style>
 </head>
 <body>
-    <div id="videoBackground"></div>
-    <canvas id="gameCanvas"></canvas>
-    <div id="customAlert">
-        <p id="alertMessage"></p>
-        <button onclick="closeAlert()">OK</button>
+    <div id="videoBackground">
+        <iframe id="backgroundVideo" 
+                src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" 
+                allow="autoplay; encrypted-media" 
+                frameborder="0" 
+                allowfullscreen>
+        </iframe>
     </div>
-    <button id="muteButton" onclick="toggleMute()">Mute</button>
+    <canvas id="gameCanvas"></canvas>
+    <button id="muteButton" onclick="toggleMute()">Unmute</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const muteButton = document.getElementById('muteButton');
-        const videoBackground = document.getElementById('videoBackground');
+        const iframe = document.getElementById('backgroundVideo');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let isMuted = true;
-        let player;
-
-        // Load the IFrame Player API code asynchronously.
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // Replace the 'videoBackground' div with an <iframe> and YouTube player after the API code downloads.
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('videoBackground', {
-                videoId: 'zRgsMMU29Q8',
-                playerVars: {
-                    autoplay: 1,
-                    mute: 1,
-                    loop: 1,
-                    playlist: 'zRgsMMU29Q8',
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    iv_load_policy: 3,
-                    fs: 0
-                },
-                events: {
-                    onReady: onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
 
         function toggleMute() {
+            const src = iframe.src;
             if (isMuted) {
-                player.unMute();
+                iframe.src = src.replace('mute=1', 'mute=0');
                 muteButton.innerText = 'Mute';
             } else {
-                player.mute();
+                iframe.src = src.replace('mute=0', 'mute=1');
                 muteButton.innerText = 'Unmute';
             }
             isMuted = !isMuted;
@@ -141,17 +99,17 @@
             if (scoreBTC + scoreADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 2!");
+                alert("Congratulations! You've reached Level 2!");
             } else if (scoreBTC + scoreADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
-                showAlert("Congratulations! You've reached Level 3!");
+                alert("Congratulations! You've reached Level 3!");
             }
 
             if (scoreBTC + scoreADA === 100) {
-                showAlert("Amazing! You've collected 100 coins!");
+                alert("Amazing! You've collected 100 coins!");
             } else if (scoreBTC + scoreADA === 200) {
-                showAlert("You're a Multi-Millionaire! Congratulations!");
+                alert("You're a Multi-Millionaire! Congratulations!");
             }
         }
 
@@ -159,17 +117,6 @@
             speedMultiplier = levels[level].speed;
             coinSpawnRate = levels[level].coinRate;
             obstacleSpawnRate = levels[level].obstacleRate;
-        }
-
-        function showAlert(message) {
-            const customAlert = document.getElementById('customAlert');
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.innerText = message;
-            customAlert.style.display = 'block';
-        }
-
-        function closeAlert() {
-            document.getElementById('customAlert').style.display = 'none';
         }
 
         class MemeBTC {
@@ -260,7 +207,7 @@
                     player.y + player.height > this.y
                 ) {
                     this.hasCollided = true;
-                    showAlert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
                     document.location.reload();
                 }
 
@@ -322,7 +269,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Changed to white for visibility
+            ctx.fillStyle = 'white';
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
@@ -332,7 +279,7 @@
             if (e.code === 'ArrowUp') {
                 memeBTC.moveUp();
             } else if (e.code === 'ArrowDown') {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
@@ -341,16 +288,16 @@
             if (touchY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
         document.addEventListener('mousemove', (e) => {
             const mouseY = e.clientY;
             if (mouseY < canvas.height / 2) {
-                memeBTC moveUp();
+                memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
