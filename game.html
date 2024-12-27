@@ -9,7 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-            color: white; /* Ensure all body text is white */
         }
         #videoBackground {
             position: fixed;
@@ -60,7 +59,9 @@
     </style>
 </head>
 <body>
-    <div id="videoBackground"></div>
+    <div id="videoBackground">
+        <iframe title="Background Video" width="100%" height="100%" src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
@@ -71,53 +72,23 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const muteButton = document.getElementById('muteButton');
-        const videoBackground = document.getElementById('videoBackground');
+        const iframe = document.querySelector('#videoBackground iframe');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let isMuted = true;
-        let player;
-
-        // Load the IFrame Player API code asynchronously.
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // Replace the 'videoBackground' div with an <iframe> and YouTube player after the API code downloads.
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('videoBackground', {
-                videoId: 'zRgsMMU29Q8',
-                playerVars: {
-                    autoplay: 1,
-                    mute: 1,
-                    loop: 1,
-                    playlist: 'zRgsMMU29Q8',
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    iv_load_policy: 3,
-                    fs: 0
-                },
-                events: {
-                    onReady: onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
 
         function toggleMute() {
-            isMuted = !isMuted;
+            const url = iframe.src;
             if (isMuted) {
-                player.mute();
+                iframe.src = url.replace('mute=1', 'mute=0');
+                muteButton.innerText = 'Mute';
             } else {
-                player.unmute();
+                iframe.src = url.replace('mute=0', 'mute=1');
+                muteButton.innerText = 'Unmute';
             }
-            muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
+            isMuted = !isMuted;
         }
 
         const gravity = 0.5;
@@ -320,7 +291,7 @@
 
             frame++;
             ctx.font = '20px Arial';
-            ctx.fillStyle = 'white'; // Ensure text color is white
+            ctx.fillStyle = 'white'; // Changed to white for visibility
             ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
 
             requestAnimationFrame(animate);
@@ -348,7 +319,7 @@
             if (mouseY < canvas.height / 2) {
                 memeBTC.moveUp();
             } else {
-                memeBTC moveDown();
+                memeBTC.moveDown();
             }
         });
 
