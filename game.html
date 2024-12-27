@@ -10,10 +10,14 @@
             margin: 0;
             overflow: hidden;
         }
-        canvas {
-            display: block;
-            background: url('https://youtu.be/zRgsMMU29Q8') no-repeat center center;
-            background-size: cover;
+        #videoBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
         #customAlert {
             display: none;
@@ -47,29 +51,39 @@
             cursor: pointer;
             z-index: 1000;
         }
+        canvas {
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
+    <video id="videoBackground" autoplay loop muted>
+        <source src="https://youtu.be/zRgsMMU29Q8" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <canvas id="gameCanvas"></canvas>
     <div id="customAlert">
         <p id="alertMessage"></p>
         <button onclick="closeAlert()">OK</button>
     </div>
     <button id="muteButton" onclick="toggleMute()">Mute</button>
-    <audio id="backgroundAudio" src="https://youtu.be/zRgsMMU29Q8" autoplay loop></audio>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const backgroundAudio = document.getElementById('backgroundAudio');
+        const videoBackground = document.getElementById('videoBackground');
+        const muteButton = document.getElementById('muteButton');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let isMuted = false;
+        let isMuted = true;
 
         function toggleMute() {
             isMuted = !isMuted;
-            backgroundAudio.muted = isMuted;
-            document.getElementById('muteButton').innerText = isMuted ? 'Unmute' : 'Mute';
+            videoBackground.muted = isMuted;
+            muteButton.innerText = isMuted ? 'Unmute' : 'Mute';
         }
 
         const gravity = 0.5;
