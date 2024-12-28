@@ -202,12 +202,12 @@
         let level = 1;
         let speedMultiplier = 1;
         let coinSpawnRate = 100;
-        let obstacleSpawnRate = 6000; // Significantly reduced obstacles
+        let obstacleSpawnRate = 6000;
 
         const levels = {
-            1: { speed: 1, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins
-            2: { speed: 1.2, coinRate: 60, obstacleRate: 8000 }, // Significantly reduced obstacles
-            3: { speed: 1.5, coinRate: 70, obstacleRate: 6000 }, // Reduced obstacles
+            1: { speed: 0.8, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
+            2: { speed: 1, coinRate: 60, obstacleRate: 8000 }, // Significantly reduced obstacles and speed
+            3: { speed: 1.2, coinRate: 70, obstacleRate: 6000 }, // Reduced obstacles and speed
             4: { speed: 2, coinRate: 40, obstacleRate: 2000 }
         };
 
@@ -301,7 +301,7 @@
             }
 
             update() {
-                this.x -= 5 * speedMultiplier;
+                this.x -= 4 * speedMultiplier;  // Slower speed
                 this.draw();
             }
         }
@@ -313,7 +313,7 @@
             }
 
             update() {
-                this.x -= 6 * speedMultiplier;
+                this.x -= 5 * speedMultiplier;  // Slower speed
                 this.draw();
             }
 
@@ -349,7 +349,7 @@
                 coins.push(new Coin(type));
             }
 
-            if (frame % obstacleSpawnRate === 0) {
+            if (frame % obstacleSpawnRate === 0 && level !== 1) { // No obstacles in Level 1
                 obstacles.push(new Obstacle());
             }
 
