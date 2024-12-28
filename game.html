@@ -9,23 +9,191 @@
             font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(to bottom, blue, orange);
+            position: relative;
         }
         canvas {
             display: block;
+            background: transparent;
+            width: 100%;
+            height: 100%;
             position: relative;
             z-index: 1;
+        }
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            z-index: 2;
+            background-color: orange;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+        .icon-white {
+            filter: invert(1);
+        }
+        .scoreboard {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+            z-index: 2;
+        }
+        .modal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            box-sizing: border-box;
+            z-index: 3;
+        }
+        .modal img {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+        }
+        .modal button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .mute-button {
+            width: 30px;
+            height: 30px;
+            background: url('https://img.icons8.com/ios-filled/50/ffffff/speaker.png') no-repeat center center;
+            background-size: cover;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .mute-button.muted {
+            background-image: url('https://img.icons8.com/ios-filled/50/ffffff/mute.png');
+        }
+        @media (max-width: 600px) {
+            .modal img {
+                width: 20px;
+                height: 20px;
+            }
+            .modal button {
+                padding: 8px 16px;
+            }
+            .top-right {
+                top: 5px;
+                right: 5px;
+                flex-wrap: nowrap;
+                gap: 5px;
+            }
+            .icon {
+                width: 20px;
+                height: 20px;
+            }
+            .scoreboard {
+                top: 70px; /* Adjusted to avoid collision with icons */
+                left: 5px;
+                font-size: 18px;
+            }
+            canvas {
+                width: 100vw;
+                height: 100vh;
+            }
+        }
+        #background-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        #background-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
+    <div class="top-right">
+        <a href="https://memebtc.io/WhitePaper.html" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/book.png" alt="White Paper" class="icon-white icon">
+        </a>
+        <a href="https://youtube.com/@MemeBTC" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube" class="icon-white icon">
+        </a>
+        <a href="https://twitter.com/MemeBTC21" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/twitter.png" alt="Twitter" class="icon-white icon">
+        </a>
+        <a href="https://instagram.com/MemeBTC21" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram" class="icon-white icon">
+        </a>
+        <a href="https://t.me/MemeBTC21" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram" class="icon-white icon">
+        </a>
+        <a href="https://app.dexhunter.io/swap?tokenIdSell=&tokenIdBuy=9281b28e3839ef01fdde183a11f05e45d0041ece6151d1ec37fd42a04d656d65425443" target="_blank">
+            <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif" alt="Buy MemeBTC" class="icon">
+        </a>
+        <a href="https://www.jpg.store/collection/5edd427a40baa134287b5e48f54257bcdfc73eb6a6076b9d82a196ab?tab=items&listingTypes=SINGLE_ASSET&saleType=buy-now" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/nft.png" alt="Buy NFT" class="icon-white icon">
+        </a>
+        <div class="mute-button" id="muteButton"></div>
+    </div>
+    <div class="scoreboard" id="scoreboard">
+        Bitcoin: 0 | Cardano: 0 | Level: 1
+    </div>
+    <div id="startModal" class="modal">
+        <h2>Welcome to MemeBTC Game!</h2>
+        <p>Collect coins and avoid obstacles to level up.</p>
+        <div>
+            <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif" alt="Bitcoin">
+            <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif" alt="Cardano">
+            <img src="https://memebtc.io/MemeBTC%20Game%20Obstacle.gif" alt="Obstacle">
+        </div>
+        <p>Level 1: Collect 20 coins<br>Level 2: Collect 50 coins<br>Level 3: Collect 100 coins<br>Level 4: Collect 200 coins to become a Multi-Millionaire!</p>
+        <button id="startButton">Start</button>
+    </div>
+    <div id="background-video-container">
+        <iframe id="background-video" src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
     <canvas id="gameCanvas"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        const backgroundVideo = document.getElementById('background-video');
+        const muteButton = document.getElementById('muteButton');
+        let isMuted = true;
+
+        muteButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            backgroundVideo.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
+            muteButton.classList.toggle('muted', isMuted);
+        });
 
         const gravity = 0.5;
         const lift = -1.5;
@@ -66,27 +234,33 @@
             obstacleSpawnRate = levels[level].obstacleRate;
         }
 
-        class MemeBTC {
-            constructor() {
-                this.width = 100;
-                this.height = 100;
-                this.x = 50;
-                this.y = canvas.height / 2;
-                this.velocityY = 0;
+        class CircleCharacter {
+            constructor(x, y, radius, imageSrc) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
                 this.image = new Image();
-                this.image.src = 'https://example.com/memebtc_logo.png';
+                this.image.src = imageSrc;
             }
 
             draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(this.image, this.x, this.y, this.radius * 2, this.radius * 2);
+                ctx.restore();
+            }
+        }
+
+        class MemeBTC extends CircleCharacter {
+            constructor() {
+                super(50, canvas.height / 2, 30, 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif'); // Adjusted size to match Bitcoin and Cardano images
+                this.velocityY = 0;
             }
 
             moveUp() {
                 this.velocityY = lift * 10;
-            }
-
-            moveDown() {
-                this.velocityY = -lift * 10;
             }
 
             update() {
@@ -96,27 +270,21 @@
                 if (this.y < 0) {
                     this.y = 0;
                 }
-                if (this.y > canvas.height - this.height) {
-                    this.y = canvas.height - this.height;
+                if (this.y > canvas.height - this.radius * 2) {
+                    this.y = canvas.height - this.radius * 2;
                 }
 
                 this.draw();
             }
         }
 
-        class Coin {
+        class Coin extends CircleCharacter {
             constructor(type) {
-                this.width = 60;
-                this.height = 60;
-                this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.height);
+                const imageSrc = type === 'BTC'
+                    ? 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Bitcoin%2C%20glowing.gif'
+                    : 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif';
+                super(canvas.width, Math.random() * (canvas.height - 60), 30, imageSrc);
                 this.type = type;
-                this.image = new Image();
-                this.image.src = type === 'BTC' ? 'https://example.com/bitcoin_coin.png' : 'https://example.com/cardano_coin.png';
-            }
-
-            draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
             update() {
@@ -125,19 +293,10 @@
             }
         }
 
-        class Obstacle {
+        class Obstacle extends CircleCharacter {
             constructor() {
-                this.width = 80;
-                this.height = 80;
-                this.x = canvas.width;
-                this.y = Math.random() * (canvas.height - this.height);
-                this.image = new Image();
-                this.image.src = 'https://example.com/obstacle.png';
+                super(canvas.width, Math.random() * (canvas.height - 60), 30, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif'); // Adjusted size to match Bitcoin image
                 this.hasCollided = false;
-            }
-
-            draw() {
-                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
 
             update() {
@@ -146,25 +305,17 @@
             }
 
             checkCollision(player) {
-                if (
-                    !this.hasCollided &&
-                    player.x < this.x + this.width &&
-                    player.x + player.width > this.x &&
-                    player.y < this.y + this.height &&
-                    player.y + player.height > this.y
-                ) {
-                    this.hasCollided = true;
-                    alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
-                    document.location.reload();
-                }
+                const distX = this.x + this.radius - (player.x + player.radius);
+                const distY = this.y + this.radius - (player.y + player.radius);
+                const distance = Math.sqrt(distX * distX + distY * distY);
 
-                if (
-                    this.x + this.width < player.x ||
-                    this.x > player.x + player.width ||
-                    this.y + this.height < player.y ||
-                    this.y > player.y + player.height
-                ) {
-                    this.hasCollided = false;
+                if (distance < this.radius + player.radius) {
+                    if (!this.hasCollided) {
+                        this.hasCollided = true;
+                        document.getElementById('startModal').style.display = 'block';
+                        alert(`Game Over! You collected ${scoreBTC} Bitcoin(s) and ${scoreADA} Cardano(s).`);
+                        document.location.reload();
+                    }
                 }
             }
         }
@@ -191,19 +342,18 @@
             coins.forEach((coin, index) => {
                 coin.update();
 
-                if (
-                    memeBTC.x < coin.x + coin.width &&
-                    memeBTC.x + memeBTC.width > coin.x &&
-                    memeBTC.y < coin.y + coin.height &&
-                    memeBTC.y + coin.height > coin.y
-                ) {
+                const distX = memeBTC.x + memeBTC.radius - (coin.x + coin.radius);
+                const distY = memeBTC.y + memeBTC.radius - (coin.y + coin.radius);
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < memeBTC.radius + coin.radius) {
                     if (coin.type === 'BTC') scoreBTC++;
                     else scoreADA++;
                     coins.splice(index, 1);
                     checkLevelUp();
                 }
 
-                if (coin.x + coin.width < 0) {
+                if (coin.x + coin.radius * 2 < 0) {
                     coins.splice(index, 1);
                 }
             });
@@ -216,38 +366,31 @@
             frame++;
             ctx.font = '20px Arial';
             ctx.fillStyle = 'white';
-            ctx.fillText(`Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`, 20, 30);
+            document.getElementById('scoreboard').innerText = `Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level}`;
 
             requestAnimationFrame(animate);
         }
 
+        function moveMemeBTC() {
+            memeBTC.moveUp();
+        }
+
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'ArrowUp') {
-                memeBTC.moveUp();
-            } else if (e.code === 'ArrowDown') {
-                memeBTC.moveDown();
+            if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+                moveMemeBTC();
             }
         });
 
-        document.addEventListener('touchstart', (e) => {
-            const touchY = e.touches[0].clientY;
-            if (touchY < canvas.height / 2) {
-                memeBTC.moveUp();
-            } else {
-                memeBTC.moveDown();
-            }
+        document.addEventListener('mousedown', moveMemeBTC);
+
+        document.addEventListener('touchstart', moveMemeBTC);
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            document.getElementById('startModal').style.display = 'none';
+            requestAnimationFrame(animate);
         });
 
-        document.addEventListener('mousemove', (e) => {
-            const mouseY = e.clientY;
-            if (mouseY < canvas.height / 2) {
-                memeBTC.moveUp();
-            } else {
-                memeBTC.moveDown();
-            }
-        });
-
-        requestAnimationFrame(animate);
+        document.getElementById('startModal').style.display = 'block';
     </script>
 </body>
 </html>
