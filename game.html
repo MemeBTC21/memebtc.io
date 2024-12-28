@@ -203,6 +203,8 @@
         let speedMultiplier = 1;
         let coinSpawnRate = 100;
         let obstacleSpawnRate = 6000;
+        let collectedBTC = 0;
+        let collectedADA = 0;
 
         const levels = {
             1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
@@ -222,20 +224,20 @@
         Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
 
         function checkLevelUp() {
-            if (scoreBTC >= 20 && scoreADA >= 20 && level === 1) {
+            if (collectedBTC >= 20 && collectedADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 2!");
-            } else if (scoreBTC >= 50 && scoreADA >= 50 && level === 2) {
+            } else if (collectedBTC >= 50 && collectedADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 3!");
-            }
-
-            if (scoreBTC === 100 && scoreADA === 100 && level === 3) {
+            } else if (collectedBTC >= 100 && collectedADA >= 100 && level === 3) {
+                level = 4;
+                updateLevelSettings();
                 audioFiles.level3Message.play();
                 alert("Impressive! You’re at Level 3 now. Only 100 more coins to achieve Multi-Millionaire status!");
-            } else if (scoreBTC === 200 && scoreADA === 200 && level === 4) {
+            } else if (collectedBTC >= 200 && collectedADA >= 200 && level === 4) {
                 audioFiles.level4Complete.play();
                 alert("You’re a Multi-Millionaire! Congratulations!");
             }
@@ -349,18 +351,6 @@
                 coins.push(new Coin(type));
             }
 
-            if (level === 2 && (scoreBTC + scoreADA) % 20 === 0 && scoreBTC + scoreADA > 0) {
-                obstacles.push(new Obstacle());
-            }
-
-            if (level === 3 && (scoreBTC + scoreADA) % 15 === 0 && scoreBTC + scoreADA > 0) {
-                obstacles.push(new Obstacle());
-            }
-
-            if (level === 4 && (scoreBTC + scoreADA) % 10 === 0 && scoreBTC + scoreADA > 0) {
-                obstacles.push(new Obstacle());
-            }
-
             coins.forEach((coin, index) => {
                 coin.update();
 
@@ -371,9 +361,11 @@
                 if (distance < memeBTC.radius + coin.radius) {
                     if (coin.type === 'BTC') {
                         scoreBTC++;
+                        collectedBTC++;
                         audioFiles.bitcoinCollect.play();
                     } else {
                         scoreADA++;
+                        collectedADA++;
                     }
                     coins.splice(index, 1);
                     checkLevelUp();
@@ -388,6 +380,18 @@
                     coins.splice(index, 1);
                 }
             });
+
+            if (level === 2 && (collectedBTC >= 20 || collectedADA >= 20) && (collectedBTC % 20 === 0 || collectedADA % 20 === 0)) {
+                obstacles.push(new Obstacle());
+            }
+
+            if (level === 3 && (collectedBTC >= 50 || collectedADA >= 50) && (collectedBTC % 15 === 0 || collectedADA % 15 === 0)) {
+                obstacles.push(new Obstacle());
+            }
+
+            if (level === 4 && (collectedBTC >= 100 || collectedADA >= 100) && (collectedBTC % 10 === 0 || collectedADA % 10 === 0)) {
+                obstacles.push(new Obstacle());
+            }
 
             obstacles.forEach((obstacle) => {
                 obstacle.update();
