@@ -202,13 +202,13 @@
         let level = 1;
         let speedMultiplier = 1;
         let coinSpawnRate = 100;
-        let obstacleSpawnRate = 200;
+        let obstacleSpawnRate = 800; // Significantly reduced obstacles
 
         const levels = {
-            1: { speed: 1, coinRate: 100, obstacleRate: 600 },  // Reduced obstacles for level 1
-            2: { speed: 1.5, coinRate: 80, obstacleRate: 500 }, // Reduced obstacles for level 2
-            3: { speed: 2, coinRate: 60, obstacleRate: 300 },
-            4: { speed: 2, coinRate: 40, obstacleRate: 200 }
+            1: { speed: 1, coinRate: 100, obstacleRate: 800 },  // Further reduced obstacles for level 1
+            2: { speed: 1.5, coinRate: 80, obstacleRate: 700 }, // Further reduced obstacles for level 2
+            3: { speed: 2, coinRate: 60, obstacleRate: 500 },
+            4: { speed: 2, coinRate: 40, obstacleRate: 300 }
         };
 
         const audioFiles = {
