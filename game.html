@@ -380,15 +380,15 @@
                 }
             });
 
-            if (level === 2 && (collectedBTC >= 20 || collectedADA >= 20) && (collectedBTC % 20 === 0 || collectedADA % 20 === 0)) {
+            if (level === 2 && (collectedBTC % 20 === 0 && collectedADA % 20 === 0)) {
                 obstacles.push(new Obstacle());
             }
 
-            if (level === 3 && (collectedBTC >= 50 || collectedADA >= 50) && (collectedBTC % 15 === 0 || collectedADA % 15 === 0)) {
+            if (level === 3 && (collectedBTC % 15 === 0 && collectedADA % 15 === 0)) {
                 obstacles.push(new Obstacle());
             }
 
-            if (level === 4 && (collectedBTC >= 100 || collectedADA >= 100) && (collectedBTC % 10 === 0 || collectedADA % 10 === 0)) {
+            if (level === 4 && (collectedBTC % 10 === 0 && collectedADA % 10 === 0)) {
                 obstacles.push(new Obstacle());
             }
 
