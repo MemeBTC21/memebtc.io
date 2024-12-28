@@ -205,9 +205,9 @@
         let obstacleSpawnRate = 6000;
 
         const levels = {
-            1: { speed: 0.8, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
-            2: { speed: 1, coinRate: 60, obstacleRate: 8000 }, // Significantly reduced obstacles and speed
-            3: { speed: 1.2, coinRate: 70, obstacleRate: 6000 }, // Reduced obstacles and speed
+            1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
+            2: { speed: 0.8, coinRate: 60, obstacleRate: 8000 }, // Significantly reduced obstacles and speed
+            3: { speed: 1, coinRate: 70, obstacleRate: 6000 }, // Reduced obstacles and speed
             4: { speed: 2, coinRate: 40, obstacleRate: 2000 }
         };
 
@@ -301,7 +301,7 @@
             }
 
             update() {
-                this.x -= 4 * speedMultiplier;  // Slower speed
+                this.x -= 2 * speedMultiplier;  // Slower speed
                 this.draw();
             }
         }
@@ -313,7 +313,7 @@
             }
 
             update() {
-                this.x -= 5 * speedMultiplier;  // Slower speed
+                this.x -= 3 * speedMultiplier;  // Slower speed
                 this.draw();
             }
 
