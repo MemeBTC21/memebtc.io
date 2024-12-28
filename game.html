@@ -172,7 +172,7 @@
             <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif" alt="Cardano">
             <img src="https://memebtc.io/MemeBTC%20Game%20Obstacle.gif" alt="Obstacle">
         </div>
-        <p>Level 1: Collect 20 coins<br>Level 2: Collect 50 coins<br>Level 3: Collect 100 coins<br>Level 4: Collect 200 coins to become a Multi-Millionaire!</p>
+        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to become a Multi-Millionaire!</p>
         <button id="startButton">Start</button>
     </div>
     <div id="background-video-container">
@@ -222,20 +222,20 @@
         Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
 
         function checkLevelUp() {
-            if (scoreBTC + scoreADA >= 20 && level === 1) {
+            if (scoreBTC >= 20 && scoreADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 2!");
-            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
+            } else if (scoreBTC >= 50 && scoreADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 3!");
             }
 
-            if (scoreBTC + scoreADA === 100 && level === 3) {
+            if (scoreBTC === 100 && scoreADA === 100 && level === 3) {
                 audioFiles.level3Message.play();
                 alert("Impressive! You’re at Level 3 now. Only 100 more coins to achieve Multi-Millionaire status!");
-            } else if (scoreBTC + scoreADA === 200 && level === 4) {
+            } else if (scoreBTC === 200 && scoreADA === 200 && level === 4) {
                 audioFiles.level4Complete.play();
                 alert("You’re a Multi-Millionaire! Congratulations!");
             }
@@ -347,21 +347,6 @@
             if (frame % coinSpawnRate === 0) {
                 const type = Math.random() > 0.5 ? 'BTC' : 'ADA';
                 coins.push(new Coin(type));
-            }
-
-            if ((scoreBTC + scoreADA) >= 20 && level === 1) {
-                level = 2;
-                updateLevelSettings();
-            }
-
-            if (level === 2 && (scoreBTC + scoreADA) >= 50) {
-                level = 3;
-                updateLevelSettings();
-            }
-
-            if (level === 3 && (scoreBTC + scoreADA) >= 100) {
-                level = 4;
-                updateLevelSettings();
             }
 
             if (level === 2 && (scoreBTC + scoreADA) % 20 === 0 && scoreBTC + scoreADA > 0) {
