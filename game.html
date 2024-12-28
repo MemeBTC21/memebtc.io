@@ -210,6 +210,15 @@
             3: { speed: 2, coinRate: 60, obstacleRate: 80 }
         };
 
+        const audioFiles = {
+            level4Complete: new Audio('path-to-level4-audio.mp3'),
+            encouragement: new Audio('path-to-encouragement-audio.mp3'),
+            milestone10: new Audio('path-to-milestone-audio.mp3'),
+            level3Message: new Audio('path-to-level3-audio.mp3')
+        };
+
+        Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
+
         function checkLevelUp() {
             if (scoreBTC + scoreADA >= 20 && level === 1) {
                 level = 2;
@@ -221,10 +230,12 @@
                 alert("Congratulations! You've reached Level 3!");
             }
 
-            if (scoreBTC + scoreADA === 100) {
-                alert("Amazing! You've collected 100 coins!");
-            } else if (scoreBTC + scoreADA === 200) {
-                alert("You're a Multi-Millionaire! Congratulations!");
+            if (scoreBTC + scoreADA === 100 && level === 3) {
+                audioFiles.level3Message.play();
+                alert("Impressive! You’re at Level 3 now. Only 100 more coins to achieve Multi-Millionaire status!");
+            } else if (scoreBTC + scoreADA === 200 && level === 4) {
+                audioFiles.level4Complete.play();
+                alert("You’re a Multi-Millionaire! Congratulations!");
             }
         }
 
@@ -255,7 +266,7 @@
 
         class MemeBTC extends CircleCharacter {
             constructor() {
-                super(50, canvas.height / 2, 30, 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif'); // Adjusted size to match Bitcoin and Cardano images
+                super(50, canvas.height / 2, 30, 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif');
                 this.velocityY = 0;
             }
 
@@ -295,7 +306,7 @@
 
         class Obstacle extends CircleCharacter {
             constructor() {
-                super(canvas.width, Math.random() * (canvas.height - 60), 30, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif'); // Adjusted size to match Bitcoin image
+                super(canvas.width, Math.random() * (canvas.height - 60), 30, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif');
                 this.hasCollided = false;
             }
 
@@ -324,6 +335,7 @@
         let coins = [];
         let obstacles = [];
         let frame = 0;
+        let encouragementTimer = 0;
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -351,6 +363,11 @@
                     else scoreADA++;
                     coins.splice(index, 1);
                     checkLevelUp();
+
+                    if ((scoreBTC + scoreADA) % 10 === 0 && (scoreBTC + scoreADA) > 0) {
+                        audioFiles.milestone10.play();
+                        alert("Keep going, you’re doing great!");
+                    }
                 }
 
                 if (coin.x + coin.radius * 2 < 0) {
@@ -362,6 +379,12 @@
                 obstacle.update();
                 obstacle.checkCollision(memeBTC);
             });
+
+            encouragementTimer++;
+            if (encouragementTimer >= 1800) {
+                audioFiles.encouragement.play();
+                encouragementTimer = 0;
+            }
 
             frame++;
             ctx.font = '20px Arial';
