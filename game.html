@@ -349,7 +349,30 @@
                 coins.push(new Coin(type));
             }
 
-            if (frame % obstacleSpawnRate === 0 && level !== 1) { // No obstacles in Level 1
+            if ((scoreBTC + scoreADA) >= 20 && level === 1) {
+                level = 2;
+                updateLevelSettings();
+            }
+
+            if (level === 2 && (scoreBTC + scoreADA) >= 50) {
+                level = 3;
+                updateLevelSettings();
+            }
+
+            if (level === 3 && (scoreBTC + scoreADA) >= 100) {
+                level = 4;
+                updateLevelSettings();
+            }
+
+            if (level === 2 && (scoreBTC + scoreADA) % 20 === 0 && scoreBTC + scoreADA > 0) {
+                obstacles.push(new Obstacle());
+            }
+
+            if (level === 3 && (scoreBTC + scoreADA) % 15 === 0 && scoreBTC + scoreADA > 0) {
+                obstacles.push(new Obstacle());
+            }
+
+            if (level === 4 && (scoreBTC + scoreADA) % 10 === 0 && scoreBTC + scoreADA > 0) {
                 obstacles.push(new Obstacle());
             }
 
