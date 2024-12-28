@@ -380,21 +380,19 @@
                 }
             });
 
-            if (level === 2 && (collectedBTC % 20 === 0 && collectedADA % 20 === 0)) {
-                obstacles.push(new Obstacle());
+            if (obstacles.length === 0 || (obstacles.length === 1 && obstacles[0].x < canvas.width / 2)) {
+                if (frame % obstacleSpawnRate === 0) {
+                    obstacles.push(new Obstacle());
+                }
             }
 
-            if (level === 3 && (collectedBTC % 15 === 0 && collectedADA % 15 === 0)) {
-                obstacles.push(new Obstacle());
-            }
-
-            if (level === 4 && (collectedBTC % 10 === 0 && collectedADA % 10 === 0)) {
-                obstacles.push(new Obstacle());
-            }
-
-            obstacles.forEach((obstacle) => {
+            obstacles.forEach((obstacle, index) => {
                 obstacle.update();
                 obstacle.checkCollision(memeBTC);
+
+                if (obstacle.x + obstacle.radius * 2 < 0) {
+                    obstacles.splice(index, 1);
+                }
             });
 
             encouragementTimer++;
