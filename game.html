@@ -205,6 +205,7 @@
         let obstacleSpawnRate = 6000;
         let collectedBTC = 0;
         let collectedADA = 0;
+        let consecutiveCardano = 0;
 
         const levels = {
             1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
@@ -218,7 +219,8 @@
             encouragement: new Audio('path-to-encouragement-audio.mp3'),
             milestone10: new Audio('path-to-milestone-audio.mp3'),
             level3Message: new Audio('path-to-level3-audio.mp3'),
-            bitcoinCollect: new Audio('path-to-bitcoin-collect-audio.mp3')
+            bitcoinCollect: new Audio('path-to-bitcoin-collect-audio.mp3'),
+            cardanoCollect: new Audio('path-to-cardano-collect-audio.mp3')
         };
 
         Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
@@ -366,12 +368,21 @@
                     } else {
                         scoreADA++;
                         collectedADA++;
+                        consecutiveCardano++;
+                        if (consecutiveCardano === 3) {
+                            audioFiles.cardanoCollect.play();
+                            consecutiveCardano = 0;
+                        }
                     }
                     coins.splice(index, 1);
                     checkLevelUp();
 
                     if ((scoreBTC + scoreADA) % 10 === 0 && (scoreBTC + scoreADA) > 0) {
                         audioFiles.encouragement.play();
+                    }
+                } else {
+                    if (coin.type === 'ADA') {
+                        consecutiveCardano = 0;
                     }
                 }
 
