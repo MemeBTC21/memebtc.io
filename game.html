@@ -172,7 +172,7 @@
             <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif" alt="Cardano">
             <img src="https://memebtc.io/MemeBTC%20Game%20Obstacle.gif" alt="Obstacle">
         </div>
-        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to become a Multi-Millionaire!</p>
+        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to b[...]
         <button id="startButton">Start</button>
     </div>
     <div id="background-video-container">
@@ -208,9 +208,9 @@
         let consecutiveCardano = 0;
 
         const levels = {
-            1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },  // No obstacles, more coins, slower speed
-            2: { speed: 0.8, coinRate: 60, obstacleRate: 8000 }, // Significantly reduced obstacles and speed
-            3: { speed: 1, coinRate: 70, obstacleRate: 6000 }, // Reduced obstacles and speed
+            1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },
+            2: { speed: 0.8, coinRate: 60, obstacleRate: 8000 },
+            3: { speed: 1, coinRate: 70, obstacleRate: 6000 },
             4: { speed: 2, coinRate: 40, obstacleRate: 2000 }
         };
 
@@ -343,6 +343,28 @@
         let frame = 0;
         let encouragementTimer = 0;
 
+        function collectCoin(coin, index) {
+            if (coin.type === 'BTC') {
+                scoreBTC++;
+                collectedBTC++;
+                audioFiles.bitcoinCollect.play();
+            } else {
+                scoreADA++;
+                collectedADA++;
+                consecutiveCardano++;
+                if (consecutiveCardano === 3) {
+                    audioFiles.cardanoCollect.play();
+                    consecutiveCardano = 0;
+                }
+            }
+            coins.splice(index, 1);
+            checkLevelUp();
+
+            if ((scoreBTC + scoreADA) % 10 === 0 && (scoreBTC + scoreADA) > 0) {
+                audioFiles.encouragement.play();
+            }
+        }
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -361,25 +383,7 @@
                 const distance = Math.sqrt(distX * distX + distY * distY);
 
                 if (distance < memeBTC.radius + coin.radius) {
-                    if (coin.type === 'BTC') {
-                        scoreBTC++;
-                        collectedBTC++;
-                        audioFiles.bitcoinCollect.play();
-                    } else {
-                        scoreADA++;
-                        collectedADA++;
-                        consecutiveCardano++;
-                        if (consecutiveCardano === 3) {
-                            audioFiles.cardanoCollect.play();
-                            consecutiveCardano = 0;
-                        }
-                    }
-                    coins.splice(index, 1);
-                    checkLevelUp();
-
-                    if ((scoreBTC + scoreADA) % 10 === 0 && (scoreBTC + scoreADA) > 0) {
-                        audioFiles.encouragement.play();
-                    }
+                    collectCoin(coin, index);
                 } else {
                     if (coin.type === 'ADA') {
                         consecutiveCardano = 0;
