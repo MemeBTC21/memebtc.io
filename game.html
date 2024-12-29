@@ -47,7 +47,7 @@
             font-size: 20px;
             z-index: 2;
         }
-        .modal {
+        .modal, .levelUpModal {
             display: none;
             position: absolute;
             top: 50%;
@@ -62,12 +62,12 @@
             box-sizing: border-box;
             z-index: 3;
         }
-        .modal img {
+        .modal img, .levelUpModal img {
             width: 30px;
             height: 30px;
             margin: 5px;
         }
-        .modal button {
+        .modal button, .levelUpModal button {
             padding: 10px 20px;
             margin-top: 10px;
             background-color: #007bff;
@@ -88,11 +88,11 @@
             background-image: url('https://img.icons8.com/ios-filled/50/ffffff/mute.png');
         }
         @media (max-width: 600px) {
-            .modal img {
+            .modal img, .levelUpModal img {
                 width: 20px;
                 height: 20px;
             }
-            .modal button {
+            .modal button, .levelUpModal button {
                 padding: 8px 16px;
             }
             .top-right {
@@ -133,30 +133,6 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 0;
-        }
-        #levelUpModal {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            border-radius: 10px;
-            text-align: center;
-            z-index: 4;
-        }
-        #levelUpModal h2 {
-            margin: 0 0 10px;
-        }
-        #levelUpModal button {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -199,15 +175,15 @@
         <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to become a Multi-Millionaire!</p>
         <button id="startButton">Start</button>
     </div>
+    <div id="levelUpModal" class="levelUpModal">
+        <h2>Great start! You’ve reached Level 1.</h2>
+        <p>Keep collecting and watch your fortune grow. Click continue to move to Level 2.</p>
+        <button id="continueButton">Continue to Level 2</button>
+    </div>
     <div id="background-video-container">
         <iframe id="background-video" src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
     <canvas id="gameCanvas"></canvas>
-    <div id="levelUpModal" class="modal">
-        <h2>Great start! You’ve reached Level 1.</h2>
-        <p>Keep collecting and watch your fortune grow. Click continue to proceed to Level 2.</p>
-        <button id="continueButton">Continue to Level 2</button>
-    </div>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -257,7 +233,7 @@
             cardanoCollect: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/cardano%20collecting%20sound.wav'),
             cardanoMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Oh%20I%20love%20Cardano.mp3'),
             bitcoinMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Michael%20Saylor%20there%20is%20no%20best%20second%20crypto%20Bitc.WAV'),
-            level1Complete: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Great%20start!%20You%E2%80%99ve%20reached%20Level%201.%20Keep%20collecting%20and%20watch%20your%20fortune%20grow.mp3')
+            level1Complete: new Audio('https://github.com/MemeBTC21/memebtc.io/blob/main/Great%20start!%20You’ve%20reached%20Level%201.%20Keep%20collecting%20and%20watch%20your%20fortune%20grow.mp3')
         };
 
         Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
@@ -290,11 +266,9 @@
         }
 
         function showLevelUpModal() {
-            const levelUpModal = document.getElementById('levelUpModal');
-            levelUpModal.style.display = 'block';
-
+            document.getElementById('levelUpModal').style.display = 'block';
             document.getElementById('continueButton').addEventListener('click', () => {
-                levelUpModal.style.display = 'none';
+                document.getElementById('levelUpModal').style.display = 'none';
                 requestAnimationFrame(animate);
             });
         }
@@ -443,4 +417,26 @@
 
             if (obstacles.length === 0 || (obstacles.length === 1 && obstacles[0].x < canvas.width / 2)) {
                 if (frame % obstacleSpawnRate === 0) {
-                    obstacles.push(new Ob
+                    obstacles.push(new Obstacle());
+                }
+            }
+
+            obstacles.forEach((obstacle, index) => {
+                obstacle.update();
+                obstacle.checkCollision(memeBTC);
+
+                if (obstacle.x + obstacle.radius * 2 < 0) {
+                    obstacles.splice(index, 1);
+                }
+            });
+
+            encouragementTimer++;
+            if (encouragementTimer >= 1800) {
+                audioFiles.encouragement.play();
+                encouragementTimer = 0;
+            }
+
+            frame++;
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'white';
+            document.getElementById('scoreboard').innerText = `Bitcoin: ${scoreBTC} | Cardano: ${scoreADA} | Level: ${level
