@@ -226,7 +226,8 @@
             level3Message: new Audio('path-to-level3-audio.mp3'),
             bitcoinCollect: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Bitcoin%20collecting%20sound.wav'),
             cardanoCollect: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/cardano%20collecting%20sound.wav'),
-            cardanoMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Oh%20I%20love%20Cardano.mp3')
+            cardanoMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Oh%20I%20love%20Cardano.mp3'),
+            bitcoinMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Michael%20Saylor%20there%20is%20no%20best%20second%20crypto%20Bitc.WAV')
         };
 
         Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
@@ -354,6 +355,9 @@
                 scoreBTC++;
                 collectedBTC++;
                 audioFiles.bitcoinCollect.play();
+                if (collectedBTC % 15 === 0) {
+                    audioFiles.bitcoinMilestone.play();
+                }
             } else {
                 scoreADA++;
                 collectedADA++;
