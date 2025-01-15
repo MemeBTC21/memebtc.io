@@ -172,11 +172,11 @@
             <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif" alt="Cardano">
             <img src="https://memebtc.io/MemeBTC%20Game%20Obstacle.gif" alt="Obstacle">
         </div>
-        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to become a Multi-Millionaire!</p>
+        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to b[...]
         <button id="startButton">Start</button>
     </div>
     <div id="background-video-container">
-        <iframe id="background-video" src="https://www.youtube.com/embed/2e6Ua8HQhQA?autoplay=1&mute=1&loop=1&playlist=2e6Ua8HQhQA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe id="background-video" src="https://www.youtube.com/embed/2e6Ua8HQhQA?autoplay=1&mute=0&loop=1&playlist=2e6Ua8HQhQA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
     <canvas id="gameCanvas"></canvas>
     <script>
@@ -193,7 +193,7 @@
 
         const backgroundVideo = document.getElementById('background-video');
         const muteButton = document.getElementById('muteButton');
-        let isMuted = true;
+        let isMuted = false; // Start with unmuted
 
         muteButton.addEventListener('click', () => {
             isMuted = !isMuted;
