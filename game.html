@@ -441,7 +441,7 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'Space') {
                 moveMemeBTC();
             }
         });
@@ -453,10 +453,3 @@
         document.getElementById('startButton').addEventListener('click', () => {
             document.getElementById('startModal').style.display = 'none';
             backgroundMusic.play(); // Start background music when the game starts
-            requestAnimationFrame(animate);
-        });
-
-        document.getElementById('startModal').style.display = 'block';
-    </script>
-</body>
-</html>
