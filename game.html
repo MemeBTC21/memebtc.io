@@ -106,7 +106,7 @@
                 height: 20px;
             }
             .scoreboard {
-                top: 70px; /* Adjusted to avoid collision with icons */
+                top: 70px;
                 left: 5px;
                 font-size: 18px;
             }
@@ -172,18 +172,24 @@
             <img src="https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/Cardeno%20Glowing.gif" alt="Cardano">
             <img src="https://memebtc.io/MemeBTC%20Game%20Obstacle.gif" alt="Obstacle">
         </div>
-        <p>Level 1: Collect 20 coins<br>Level 2: Collect 50 coins<br>Level 3: Collect 100 coins<br>Level 4: Collect 200 coins to become a Multi-Millionaire!</p>
+        <p>Level 1: Collect 20 Bitcoin and 20 Cardano<br>Level 2: Collect 50 Bitcoin and 50 Cardano<br>Level 3: Collect 100 Bitcoin and 100 Cardano<br>Level 4: Collect 200 Bitcoin and 200 Cardano to become a Multi-Millionaire!</p>
         <button id="startButton">Start</button>
     </div>
     <div id="background-video-container">
-        <iframe id="background-video" src="https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=1&loop=1&playlist=zRgsMMU29Q8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe id="background-video" src="https://www.youtube.com/embed/2e6Ua8HQhQA?autoplay=1&mute=1&loop=1&playlist=2e6Ua8HQhQA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
     <canvas id="gameCanvas"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         const backgroundVideo = document.getElementById('background-video');
         const muteButton = document.getElementById('muteButton');
@@ -191,7 +197,7 @@
 
         muteButton.addEventListener('click', () => {
             isMuted = !isMuted;
-            backgroundVideo.src = `https://www.youtube.com/embed/zRgsMMU29Q8?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=zRgsMMU29Q8`;
+            backgroundVideo.src = `https://www.youtube.com/embed/2e6Ua8HQhQA?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=2e6Ua8HQhQA`;
             muteButton.classList.toggle('muted', isMuted);
         });
 
@@ -202,29 +208,47 @@
         let level = 1;
         let speedMultiplier = 1;
         let coinSpawnRate = 100;
-        let obstacleSpawnRate = 200;
+        let obstacleSpawnRate = 6000;
+        let collectedBTC = 0;
+        let collectedADA = 0;
 
         const levels = {
-            1: { speed: 1, coinRate: 100, obstacleRate: 200 },
-            2: { speed: 1.5, coinRate: 80, obstacleRate: 120 },
-            3: { speed: 2, coinRate: 60, obstacleRate: 80 }
+            1: { speed: 0.5, coinRate: 50, obstacleRate: 0 },
+            2: { speed: 0.8, coinRate: 60, obstacleRate: 8000 },
+            3: { speed: 1, coinRate: 70, obstacleRate: 6000 },
+            4: { speed: 2, coinRate: 40, obstacleRate: 2000 }
         };
 
+        const audioFiles = {
+            level4Complete: new Audio('path-to-level4-audio.mp3'),
+            encouragement: new Audio('path-to-encouragement-audio.mp3'),
+            milestone10: new Audio('path-to-milestone-audio.mp3'),
+            level3Message: new Audio('path-to-level3-audio.mp3'),
+            bitcoinCollect: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Bitcoin%20collecting%20sound.wav'),
+            cardanoCollect: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/cardano%20collecting%20sound.wav'),
+            cardanoMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Oh%20I%20love%20Cardano.mp3'),
+            bitcoinMilestone: new Audio('https://github.com/MemeBTC21/memebtc.io/raw/main/Michael%20Saylor%20there%20is%20no%20best%20second%20crypto%20Bitc.WAV')
+        };
+
+        Object.values(audioFiles).forEach(audio => audio.volume = 0.8);
+
         function checkLevelUp() {
-            if (scoreBTC + scoreADA >= 20 && level === 1) {
+            if (collectedBTC >= 20 && collectedADA >= 20 && level === 1) {
                 level = 2;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 2!");
-            } else if (scoreBTC + scoreADA >= 50 && level === 2) {
+            } else if (collectedBTC >= 50 && collectedADA >= 50 && level === 2) {
                 level = 3;
                 updateLevelSettings();
                 alert("Congratulations! You've reached Level 3!");
-            }
-
-            if (scoreBTC + scoreADA === 100) {
-                alert("Amazing! You've collected 100 coins!");
-            } else if (scoreBTC + scoreADA === 200) {
-                alert("You're a Multi-Millionaire! Congratulations!");
+            } else if (collectedBTC >= 100 && collectedADA >= 100 && level === 3) {
+                level = 4;
+                updateLevelSettings();
+                audioFiles.level3Message.play();
+                alert("Impressive! You’re at Level 3 now. Only 100 more coins to achieve Multi-Millionaire status!");
+            } else if (collectedBTC >= 200 && collectedADA >= 200 && level === 4) {
+                audioFiles.level4Complete.play();
+                alert("You’re a Multi-Millionaire! Congratulations!");
             }
         }
 
@@ -255,7 +279,7 @@
 
         class MemeBTC extends CircleCharacter {
             constructor() {
-                super(50, canvas.height / 2, 30, 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif'); // Adjusted size to match Bitcoin and Cardano images
+                super(50, canvas.height / 2, 30, 'https://raw.githubusercontent.com/MemeBTC21/memebtc.io/main/MemeBTC_Logo.gif');
                 this.velocityY = 0;
             }
 
@@ -288,19 +312,19 @@
             }
 
             update() {
-                this.x -= 5 * speedMultiplier;
+                this.x -= 2 * speedMultiplier;  // Slower speed
                 this.draw();
             }
         }
 
         class Obstacle extends CircleCharacter {
             constructor() {
-                super(canvas.width, Math.random() * (canvas.height - 60), 30, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif'); // Adjusted size to match Bitcoin image
+                super(canvas.width, Math.random() * (canvas.height - 60), 30, 'https://memebtc.io/MemeBTC%20Game%20Obstacle.gif');
                 this.hasCollided = false;
             }
 
             update() {
-                this.x -= 6 * speedMultiplier;
+                this.x -= 3 * speedMultiplier;  // Slower speed
                 this.draw();
             }
 
@@ -324,6 +348,31 @@
         let coins = [];
         let obstacles = [];
         let frame = 0;
+        let encouragementTimer = 0;
+
+        function collectCoin(coin, index) {
+            if (coin.type === 'BTC') {
+                scoreBTC++;
+                collectedBTC++;
+                audioFiles.bitcoinCollect.play();
+                if (collectedBTC % 15 === 0) {
+                    audioFiles.bitcoinMilestone.play();
+                }
+            } else {
+                scoreADA++;
+                collectedADA++;
+                audioFiles.cardanoCollect.play();
+                if (collectedADA % 5 === 0) {
+                    audioFiles.cardanoMilestone.play();
+                }
+            }
+            coins.splice(index, 1);
+            checkLevelUp();
+
+            if ((scoreBTC + scoreADA) % 10 === 0 && (scoreBTC + scoreADA) > 0) {
+                audioFiles.encouragement.play();
+            }
+        }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -335,10 +384,6 @@
                 coins.push(new Coin(type));
             }
 
-            if (frame % obstacleSpawnRate === 0) {
-                obstacles.push(new Obstacle());
-            }
-
             coins.forEach((coin, index) => {
                 coin.update();
 
@@ -347,10 +392,7 @@
                 const distance = Math.sqrt(distX * distX + distY * distY);
 
                 if (distance < memeBTC.radius + coin.radius) {
-                    if (coin.type === 'BTC') scoreBTC++;
-                    else scoreADA++;
-                    coins.splice(index, 1);
-                    checkLevelUp();
+                    collectCoin(coin, index);
                 }
 
                 if (coin.x + coin.radius * 2 < 0) {
@@ -358,10 +400,26 @@
                 }
             });
 
-            obstacles.forEach((obstacle) => {
+            if (obstacles.length === 0 || (obstacles.length === 1 && obstacles[0].x < canvas.width / 2)) {
+                if (frame % obstacleSpawnRate === 0) {
+                    obstacles.push(new Obstacle());
+                }
+            }
+
+            obstacles.forEach((obstacle, index) => {
                 obstacle.update();
                 obstacle.checkCollision(memeBTC);
+
+                if (obstacle.x + obstacle.radius * 2 < 0) {
+                    obstacles.splice(index, 1);
+                }
             });
+
+            encouragementTimer++;
+            if (encouragementTimer >= 1800) {
+                audioFiles.encouragement.play();
+                encouragementTimer = 0;
+            }
 
             frame++;
             ctx.font = '20px Arial';
